@@ -8,7 +8,7 @@ const AppContainer = ({
   header,
   scrollY,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   header: React.ReactNode;
   scrollY: Animated.SharedValue<number>;
 }) => {
@@ -25,12 +25,15 @@ const AppContainer = ({
         contentFit="cover"
         contentPosition="center"
         style={styles.pattern}
+        cachePolicy={"memory-disk"}
       />
       {header}
       <Animated.ScrollView
         contentContainerStyle={styles.content}
         onScroll={scrollHandler}
-        scrollEventThrottle={16}
+        scrollEventThrottle={20}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       >
         {children}
       </Animated.ScrollView>
@@ -48,11 +51,12 @@ const styles = StyleSheet.create({
     top: 20,
     width: "100%",
     height: 300,
-    zIndex: -1,
+    zIndex: 0,
   },
   content: {
     paddingTop: 120,
     paddingBottom: 20,
+    paddingHorizontal: 20,
   },
 });
 

@@ -46,37 +46,37 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 14,
     lineHeight: 20,
-    fontWeight: "400",
+    fontFamily: "Cairo-Regular",
   },
   defaultBold: {
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
-    fontWeight: "700",
+    fontFamily: "Cairo-Medium",
   },
   secondary: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 20,
-    fontWeight: "400",
+    fontFamily: "Cairo-Regular",
   },
   listTitle: {
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 22,
-    fontWeight: "700",
+    fontFamily: "Cairo-Medium",
   },
   pageTitle: {
     fontSize: 20,
     lineHeight: 28,
-    fontWeight: "700",
+    fontFamily: "Cairo-Medium",
   },
   heading: {
     fontSize: 24,
     lineHeight: 30,
-    fontWeight: "700",
+    fontFamily: "Cairo-Bold",
   },
   link: {
     fontSize: 14,
     lineHeight: 20,
     textDecorationLine: "underline",
-    fontWeight: "500",
+    fontFamily: "Cairo-Regular",
   },
 });

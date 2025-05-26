@@ -1,58 +1,94 @@
-import { Image } from "expo-image";
-import { Platform, StyleSheet } from "react-native";
+"use client";
 
 import { AppText } from "@/components/AppText";
-import { AppView } from "@/components/AppView";
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
+import AppScreen from "@/components/global/AppScreen";
+import SettingsCard from "@/components/screens/profile/SettingsCard";
+import UserCard from "@/components/screens/profile/UserCard";
+import { AppButton } from "@/components/ui/Button";
+import { MingCuteIconsMap } from "@/components/ui/MingCute/MingCuteIcon";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useMemo } from "react";
+import { StyleSheet, View } from "react-native";
 
 export default function ProfileScreen() {
+  const router = useRouter();
+  const settingsOptions = useMemo(
+    () =>
+      [
+        {
+          title: "السوبرماركت المفضل",
+          content: "بن داود",
+          iconName: "shopping_cart_1_fill",
+        },
+        {
+          title: "المفضلة",
+          content: "12 منتجات",
+          iconName: "heart_fill",
+        },
+        {
+          title: "سجل المشتريات",
+          content: "12 منتجات",
+          iconName: "history_2_fill",
+        },
+        {
+          title: "العناوين",
+          content: "4 عناوين",
+          iconName: "location_fill",
+        },
+        {
+          title: "اللغة",
+          content: "عربي",
+          iconName: "translate_2_fill",
+        },
+        {
+          title: "رفع بلاغ",
+          content: "0 بلاغات تحت المراجعة",
+          iconName: "alert_diamond_fill",
+        },
+      ] as {
+        title: string;
+        content: string;
+        iconName: keyof typeof MingCuteIconsMap;
+      }[],
+    []
+  );
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <AppView style={styles.titleContainer}>
-        <AppText type="title">profile!</AppText>
-        <HelloWave />
-      </AppView>
-      <AppView style={styles.stepContainer}>
-        <AppText type="subtitle">Step 1: Try it</AppText>
-        <AppText>
-          Edit <AppText type="defaultSemiBold">app/(tabs)/index.tsx</AppText> to
-          see changes. Press{" "}
-          <AppText type="defaultSemiBold">
-            {Platform.select({
-              ios: "cmd + d",
-              android: "cmd + m",
-              web: "F12",
-            })}
-          </AppText>{" "}
-          to open developer tools.
-        </AppText>
-      </AppView>
-      <AppView style={styles.stepContainer}>
-        <AppText type="subtitle">Step 2: Explore</AppText>
-        <AppText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </AppText>
-      </AppView>
-      <AppView style={styles.stepContainer}>
-        <AppText type="subtitle">Step 3: Get a fresh start</AppText>
-        <AppText>
-          {`When you're ready, run `}
-          <AppText type="defaultSemiBold">npm run reset-project</AppText> to get
-          a fresh <AppText type="defaultSemiBold">app</AppText> directory. This
-          will move the current <AppText type="defaultSemiBold">app</AppText> to{" "}
-          <AppText type="defaultSemiBold">app-example</AppText>.
-        </AppText>
-      </AppView>
-    </ParallaxScrollView>
+    <AppScreen>
+      <View style={{ gap: 24 }}>
+        <View style={{ gap: 10 }}>
+          <AppText style={{ textAlign: "right" }} type="pageTitle">
+            الملف الشخصي
+          </AppText>
+          <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
+          <AppButton
+            title="تسجيل الخروج"
+            variant="primary"
+            onPress={() => {}}
+            startComponent={(color) => (
+              <MaterialCommunityIcons name="logout" size={24} color={color} />
+            )}
+          />
+        </View>
+
+        <View style={{ gap: 12 }}>
+          {settingsOptions.map((item, index) => (
+            <SettingsCard
+              key={index}
+              variant="primary"
+              label={item.title}
+              value={item.content}
+              IconName={item.iconName}
+              onPress={() => {
+                // Add navigation or action here
+                router.push("/profile/store");
+                console.log(`Pressed: ${item.title}`);
+              }}
+            />
+          ))}
+        </View>
+      </View>
+    </AppScreen>
   );
 }
 
@@ -67,8 +103,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: "100%",
+    width: "100%",
     bottom: 0,
     left: 0,
     position: "absolute",

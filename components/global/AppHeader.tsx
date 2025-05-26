@@ -14,9 +14,10 @@ interface AppHeaderProps {
 
 const AppHeader = ({ scrollY }: AppHeaderProps) => {
   const animatedStyle = useAnimatedStyle(() => {
-    const backgroundOpacity = interpolate(scrollY.value, [0, 50], [0, 1]);
-    const shadowOpacity = interpolate(scrollY.value, [30, 50], [0, 0.2]);
-    const elevation = interpolate(scrollY.value, [30, 50], [0, 4]);
+    const rawOpacity = interpolate(scrollY.value, [0, 50], [0, 1]);
+    const backgroundOpacity = Math.max(rawOpacity, 0); // minimum opacity
+    const shadowOpacity = interpolate(scrollY.value, [20, 50], [0, 0.2]);
+    const elevation = interpolate(scrollY.value, [20, 50], [0, 4]);
 
     return {
       backgroundColor: `rgba(255, 255, 255, ${backgroundOpacity})`,
@@ -31,27 +32,22 @@ const AppHeader = ({ scrollY }: AppHeaderProps) => {
         <IconButton
           onPress={() => console.log("Clicked")}
           icon={(color) => (
-            <MingCuteIcon name="mgc_location_fill" size={24} color={color} />
+            <MingCuteIcon name="location_fill" size={24} color={color} />
           )}
-          variant="secondary"
           rounded={false}
         />
         <IconButton
           onPress={() => console.log("Clicked")}
           icon={(color) => (
-            <MingCuteIcon
-              name="mgc_notification_fill"
-              size={24}
-              color={color}
-            />
+            <MingCuteIcon name="notification_fill" size={24} color={color} />
           )}
-          variant="secondary"
           rounded={false}
         />
       </View>
       <Image
         source={require("@/assets/images/Logo.svg")}
         style={{ width: 113, height: 44 }}
+        cachePolicy={"memory-disk"}
       />
     </Animated.View>
   );

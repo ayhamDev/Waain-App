@@ -1,34 +1,44 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { forwardRef } from "react";
+import { StyleSheet, TextInput } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import TextInputField from "../ui/Input";
+import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
 
-interface AppHeaderProps {
+interface SearchHeaderProps {
   scrollY: Animated.SharedValue<number>;
 }
 
-const AppHeader = ({ scrollY }: AppHeaderProps) => {
-  const animatedStyle = useAnimatedStyle(() => {
-    const backgroundOpacity = interpolate(scrollY.value, [0, 50], [0, 1]);
-    const shadowOpacity = interpolate(scrollY.value, [30, 50], [0, 0.2]);
-    const elevation = interpolate(scrollY.value, [30, 50], [0, 4]);
+const SearchHeader = forwardRef<TextInput, SearchHeaderProps>(
+  ({ scrollY }, ref) => {
+    const animatedStyle = useAnimatedStyle(() => {
+      const backgroundOpacity = interpolate(scrollY.value, [0, 50], [0, 1]);
+      const shadowOpacity = interpolate(scrollY.value, [30, 50], [0, 0.2]);
+      const elevation = interpolate(scrollY.value, [30, 50], [0, 4]);
 
-    return {
-      backgroundColor: `rgba(255, 255, 255, ${backgroundOpacity})`,
-      shadowOpacity,
-      elevation,
-    };
-  });
+      return {
+        backgroundColor: `rgba(255, 255, 255, ${backgroundOpacity})`,
+        shadowOpacity,
+        elevation,
+      };
+    });
 
-  return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <TextInputField placeholder="Search" style={{ flex: 1 }} />
-    </Animated.View>
-  );
-};
+    return (
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <TextInputField
+          ref={ref}
+          startComponent={({ color }) => (
+            <MingCuteIcon size={22} name="search_line" color={color} />
+          )}
+          placeholder="Search..."
+          style={{ flex: 1 }}
+        />
+      </Animated.View>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +47,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    paddingTop: 40,
+    paddingTop: 50,
     boxSizing: "content-box",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -50,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppHeader;
+export default SearchHeader;

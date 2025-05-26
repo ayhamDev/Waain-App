@@ -53,8 +53,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
   ];
 
   const iconColor =
-    variantTextStyles[variant]?.color ||
-    (variant === "outline" ? Colors.light.primary : "#fff");
+    variantTextStyles[variant]?.color || Colors.light.primary.default;
 
   const Content = () => (
     <View style={styles.content}>
@@ -85,7 +84,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
     >
       <Pressable
         android_ripple={{
-          color: Colors.light.secondary,
+          color: Colors.light.secondary.default,
         }}
         onPress={onPress}
         disabled={isDisabled}
@@ -127,8 +126,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   text: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 14,
+    fontFamily: "Cairo-Bold",
   },
   disabled: {
     opacity: 0.6,
@@ -137,29 +136,28 @@ const styles = StyleSheet.create({
     color: "#aaa",
   },
 });
-
 const variantStyles = StyleSheet.create({
   primary: {
-    backgroundColor: Colors.light.button,
+    backgroundColor: Colors.light.primary["300"], // Use your primary color
   },
   secondary: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: Colors.light.primary["950"],
   },
   outline: {
     borderWidth: 1,
-    borderColor: Colors.light.secondary,
-    backgroundColor: "#fff",
+    borderColor: Colors.light.primary["950"],
+    backgroundColor: Colors.light.background.default,
   },
 });
 
 const variantTextStyles = StyleSheet.create({
   primary: {
-    color: "#fff",
+    color: Colors.light.primary["950"],
   },
   secondary: {
-    color: Colors.light.text,
+    color: Colors.light.primary["50"],
   },
   outline: {
-    color: Colors.light.text,
+    color: Colors.light.primary["950"],
   },
 });

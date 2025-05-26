@@ -1,8 +1,3 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -25,6 +20,10 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
     MingCute: require("@/assets/fonts/MingCute.ttf"),
+    "Cairo-Light": require("@/assets/fonts/Cairo-Light.ttf"),
+    "Cairo-Regular": require("@/assets/fonts/Cairo-Regular.ttf"),
+    "Cairo-Medium": require("@/assets/fonts/Cairo-Medium.ttf"),
+    "Cairo-Bold": require("@/assets/fonts/Cairo-Bold.ttf"),
   });
   useEffect(() => {
     if (loaded || error) {
@@ -33,17 +32,15 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   return (
-    <ThemeProvider value={theme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="profile" />
+        <Stack.Screen name="notification" />
+        <Stack.Screen name="auth" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </>
   );
 }

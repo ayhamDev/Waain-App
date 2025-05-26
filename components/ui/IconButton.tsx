@@ -3,8 +3,6 @@ import React from "react";
 import {
   ActivityIndicator,
   GestureResponderEvent,
-  Platform,
-  Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -12,7 +10,7 @@ import {
 } from "react-native";
 
 type IconButtonProps = {
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
   icon: (color: string) => React.ReactNode;
   loading?: boolean;
   disabled?: boolean;
@@ -47,8 +45,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   ];
 
   const iconColor =
-    variantTextStyles[variant]?.color ||
-    (variant === "outline" ? Colors.light.primary : "#fff");
+    variantTextStyles[variant]?.color || Colors.light.primary["950"];
 
   const content = loading ? (
     <ActivityIndicator size="small" color={iconColor} />
@@ -56,25 +53,10 @@ export const IconButton: React.FC<IconButtonProps> = ({
     icon(iconColor)
   );
 
-  if (Platform.OS === "android") {
-    return (
-      <View style={[...buttonStyles, { overflow: "hidden" }]}>
-        <Pressable
-          android_ripple={{ color: Colors.light.secondary }}
-          onPress={onPress}
-          disabled={isDisabled}
-          style={StyleSheet.absoluteFill}
-        >
-          <View style={styles.center}>{content}</View>
-        </Pressable>
-      </View>
-    );
-  }
-
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={0.7}
+      activeOpacity={0.5}
       disabled={isDisabled}
       style={buttonStyles}
     >
@@ -100,26 +82,26 @@ const styles = StyleSheet.create({
 
 const variantStyles = StyleSheet.create({
   primary: {
-    backgroundColor: Colors.light.button,
+    backgroundColor: Colors.light.primary["300"], // Use your primary color
   },
   secondary: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: Colors.light.primary["950"],
   },
   outline: {
     borderWidth: 1,
-    borderColor: Colors.light.secondary,
-    backgroundColor: "#fff",
+    borderColor: Colors.light.primary["950"],
+    backgroundColor: Colors.light.background.default,
   },
 });
 
 const variantTextStyles = StyleSheet.create({
   primary: {
-    color: "#fff",
+    color: Colors.light.primary["950"],
   },
   secondary: {
-    color: Colors.light.text,
+    color: Colors.light.primary["50"],
   },
   outline: {
-    color: Colors.light.text,
+    color: Colors.light.primary["950"],
   },
 });

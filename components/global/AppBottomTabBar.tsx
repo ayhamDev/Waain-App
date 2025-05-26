@@ -2,7 +2,6 @@ import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { Colors, ThemeStyles } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Text } from "@react-navigation/elements";
-import { useLinkBuilder } from "@react-navigation/native";
 import { Tabs } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -14,21 +13,21 @@ import {
 } from "react-native";
 
 const TAB_ROUTES = [
-  { name: "index", iconFill: "mgc_home_4_fill", iconLine: "mgc_home_4_line" },
+  { name: "index", iconFill: "home_4_fill", iconLine: "home_4_line" },
   {
     name: "search/index",
-    iconFill: "mgc_search_fill",
-    iconLine: "mgc_search_line",
+    iconFill: "search_fill",
+    iconLine: "search_line",
   },
   {
     name: "cart/index",
-    iconFill: "mgc_shopping_cart_1_fill",
-    iconLine: "mgc_shopping_cart_1_line",
+    iconFill: "shopping_cart_1_fill",
+    iconLine: "shopping_cart_1_line",
   },
   {
     name: "profile/index",
-    iconFill: "mgc_user_2_fill",
-    iconLine: "mgc_user_2_line",
+    iconFill: "user_2_fill",
+    iconLine: "user_2_line",
   },
 ] as const;
 
@@ -39,7 +38,6 @@ type MyTabBarProps = {
 };
 
 function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
-  const { buildHref } = useLinkBuilder();
   const { theme } = useColorScheme();
 
   // current selected index
@@ -59,7 +57,7 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
         toValue: layout.x + 10,
         useNativeDriver: true,
         stiffness: 220,
-        damping: 20,
+        damping: 100,
         mass: 1,
       }).start();
     }
@@ -99,9 +97,9 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
       style={[
         styles.tabBarContainer,
         {
-          backgroundColor: Colors[theme].background,
-          borderTopColor: Colors[theme].secondary,
-          borderTopWidth: 0.19,
+          backgroundColor: Colors[theme].background.default,
+          borderTopColor: Colors[theme].secondary.default,
+          borderTopWidth: 0.2,
           marginBottom: 5,
         },
       ]}
@@ -114,7 +112,7 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
             {
               width: layouts[currentIndex].width - 20,
               transform: [{ translateX }],
-              backgroundColor: Colors[theme].tint,
+              backgroundColor: Colors[theme].primary[300],
               borderRadius: ThemeStyles.borderRadus.default,
             },
           ]}
@@ -165,7 +163,15 @@ export default function TabLayout() {
       tabBar={(props) => <MyTabBar {...props} />}
     >
       {TAB_ROUTES.map(({ name }) => (
-        <Tabs.Screen key={name} name={name} />
+        <Tabs.Screen
+          key={name}
+          name={name}
+          options={{
+            sceneStyle: {
+              backgroundColor: "white",
+            },
+          }}
+        />
       ))}
     </Tabs>
   );

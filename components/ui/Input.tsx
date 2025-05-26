@@ -10,6 +10,8 @@ import {
   ViewStyle,
 } from "react-native";
 
+type RenderComponent = (props: { color: string }) => React.ReactNode;
+
 type Props = {
   label?: string;
   errorMessage?: string;
@@ -19,6 +21,8 @@ type Props = {
   labelStyle?: TextStyle;
   inputStyle?: TextStyle;
   errorStyle?: TextStyle;
+  startComponent?: React.ReactNode | RenderComponent;
+  endComponent?: React.ReactNode | RenderComponent;
 } & TextInputProps;
 
 const TextInputField = forwardRef<TextInput, Props>(
@@ -33,6 +37,8 @@ const TextInputField = forwardRef<TextInput, Props>(
       inputStyle,
       errorStyle,
       style,
+      startComponent,
+      endComponent,
       ...rest
     },
     ref
@@ -40,6 +46,23 @@ const TextInputField = forwardRef<TextInput, Props>(
     const { theme } = useColorScheme() ?? "light";
     const isDark = theme === "dark";
     const isErrored = !!errorMessage;
+
+    const resolvedColor = isErrored
+      ? "#ff4d4f"
+      : disabled
+      ? "#aaa"
+      : isDark
+      ? "#fff"
+      : "#000";
+
+    const renderComponent = (
+      component: React.ReactNode | RenderComponent
+    ): React.ReactNode => {
+      if (typeof component === "function") {
+        return component({ color: resolvedColor });
+      }
+      return component;
+    };
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -56,22 +79,41 @@ const TextInputField = forwardRef<TextInput, Props>(
             {label}
           </Text>
         )}
-        <TextInput
-          ref={ref}
-          editable={!disabled}
+        <View
           style={[
-            styles.input,
+            styles.inputWrapper,
             isDark && styles.inputDark,
-            rtl && styles.rtlText,
             isErrored && styles.inputError,
             disabled && styles.inputDisabled,
-            inputStyle,
-            style,
           ]}
-          placeholderTextColor={isDark ? "#999" : "#aaa"}
-          textAlign={rtl ? "right" : "left"}
-          {...rest}
-        />
+        >
+          {!!startComponent && (
+            <View style={styles.sideComponent}>
+              {renderComponent(startComponent)}
+            </View>
+          )}
+          <TextInput
+            ref={ref}
+            editable={!disabled}
+            style={[
+              styles.input,
+              rtl && styles.rtlText,
+              inputStyle,
+              style,
+              { flex: 1 },
+              disabled && styles.inputTextDisabled,
+              isDark && styles.inputTextDark,
+            ]}
+            placeholderTextColor={isDark ? "#999" : "#aaa"}
+            textAlign={rtl ? "right" : "left"}
+            {...rest}
+          />
+          {!!endComponent && (
+            <View style={styles.sideComponent}>
+              {renderComponent(endComponent)}
+            </View>
+          )}
+        </View>
         {!!errorMessage && (
           <Text style={[styles.errorMessage, errorStyle]}>{errorMessage}</Text>
         )}
@@ -97,27 +139,37 @@ const styles = StyleSheet.create({
   labelDisabled: {
     color: "#aaa",
   },
-  input: {
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
     paddingVertical: 10,
-    paddingHorizontal: 14,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ccc",
+    backgroundColor: "white",
+  },
+  input: {
     fontSize: 16,
     color: "#000",
-    backgroundColor: "#fff",
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+  },
+  inputTextDark: {
+    color: "#fff",
+  },
+  inputTextDisabled: {
+    color: "#999",
   },
   inputDark: {
     borderColor: "#444",
     backgroundColor: "#222",
-    color: "#fff",
   },
   inputError: {
     borderColor: "#ff4d4f",
   },
   inputDisabled: {
     backgroundColor: "#f0f0f0",
-    color: "#999",
   },
   rtlText: {
     textAlign: "right",
@@ -127,6 +179,9 @@ const styles = StyleSheet.create({
     color: "#ff4d4f",
     fontSize: 12,
     marginTop: 4,
+  },
+  sideComponent: {
+    marginHorizontal: 6,
   },
 });
 
