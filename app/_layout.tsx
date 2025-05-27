@@ -1,19 +1,18 @@
+import { useColorScheme } from "@/hooks/useColorScheme";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { useEffect } from "react";
+import "react-native-reanimated";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 // Set the animation options. This is optional.
-// SplashScreen.setOptions({
-//   duration: 1000,
-//   fade: true,
-// });
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 export default function RootLayout() {
   const { theme } = useColorScheme();
@@ -33,14 +32,18 @@ export default function RootLayout() {
 
   return (
     <>
+      <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
+        {/* main */}
         <Stack.Screen name="(tabs)" />
+        {/* screens stacks */}
         <Stack.Screen name="profile" />
-        <Stack.Screen name="notification" />
+        <Stack.Screen name="notification/index" />
+
+        {/* auth */}
         <Stack.Screen name="auth" />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
     </>
   );
 }

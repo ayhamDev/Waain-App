@@ -2,17 +2,16 @@
 
 import { AppText } from "@/components/AppText";
 import AppScreen from "@/components/global/AppScreen";
+import AppSheetProvider from "@/components/provider";
 import SettingsCard from "@/components/screens/profile/SettingsCard";
 import UserCard from "@/components/screens/profile/UserCard";
 import { AppButton } from "@/components/ui/Button";
 import { MingCuteIconsMap } from "@/components/ui/MingCute/MingCuteIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-
+import { View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 export default function ProfileScreen() {
-  const router = useRouter();
   const settingsOptions = useMemo(
     () =>
       [
@@ -40,6 +39,7 @@ export default function ProfileScreen() {
           title: "اللغة",
           content: "عربي",
           iconName: "translate_2_fill",
+          onPress: () => SheetManager.show("Language-sheet"),
         },
         {
           title: "رفع بلاغ",
@@ -50,63 +50,47 @@ export default function ProfileScreen() {
         title: string;
         content: string;
         iconName: keyof typeof MingCuteIconsMap;
+        onPress: () => void;
       }[],
     []
   );
-  return (
-    <AppScreen>
-      <View style={{ gap: 24 }}>
-        <View style={{ gap: 10 }}>
-          <AppText style={{ textAlign: "right" }} type="pageTitle">
-            الملف الشخصي
-          </AppText>
-          <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
-          <AppButton
-            title="تسجيل الخروج"
-            variant="primary"
-            onPress={() => {}}
-            startComponent={(color) => (
-              <MaterialCommunityIcons name="logout" size={24} color={color} />
-            )}
-          />
-        </View>
 
-        <View style={{ gap: 12 }}>
-          {settingsOptions.map((item, index) => (
-            <SettingsCard
-              key={index}
-              variant="primary"
-              label={item.title}
-              value={item.content}
-              IconName={item.iconName}
-              onPress={() => {
-                // Add navigation or action here
-                router.push("/profile/store");
-                console.log(`Pressed: ${item.title}`);
-              }}
+  return (
+    <AppSheetProvider>
+      <AppScreen>
+        <View style={{ gap: 24 }}>
+          <View style={{ gap: 10 }}>
+            <AppText style={{ textAlign: "right" }} type="heading">
+              الملف الشخصي
+            </AppText>
+          </View>
+          <View style={{ gap: 10 }}>
+            <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
+            <AppButton
+              title="تسجيل الخروج"
+              variant="secondary"
+              onPress={() => {}}
+              startComponent={(color) => (
+                <MaterialCommunityIcons name="logout" size={24} color={color} />
+              )}
             />
-          ))}
+          </View>
+
+          <View style={{ gap: 12 }}>
+            {settingsOptions.map((item, index) => (
+              <SettingsCard
+                key={index}
+                variant="primary"
+                label={item.title}
+                value={item.content}
+                IconName={item.iconName}
+                onPress={item?.onPress}
+              />
+            ))}
+          </View>
         </View>
-      </View>
-    </AppScreen>
+        {/* Sheets */}
+      </AppScreen>
+    </AppSheetProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: "100%",
-    width: "100%",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});

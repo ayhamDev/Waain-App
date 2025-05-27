@@ -99,7 +99,7 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
         {
           backgroundColor: Colors[theme].background.default,
           borderTopColor: Colors[theme].secondary.default,
-          borderTopWidth: 0.2,
+          borderTopWidth: 0.75,
           marginBottom: 5,
         },
       ]}
@@ -159,19 +159,16 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        sceneStyle: {
+          backgroundColor: "white",
+        },
+      }}
       tabBar={(props) => <MyTabBar {...props} />}
     >
       {TAB_ROUTES.map(({ name }) => (
-        <Tabs.Screen
-          key={name}
-          name={name}
-          options={{
-            sceneStyle: {
-              backgroundColor: "white",
-            },
-          }}
-        />
+        <Tabs.Screen key={name} name={name} />
       ))}
     </Tabs>
   );

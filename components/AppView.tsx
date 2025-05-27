@@ -14,7 +14,7 @@ export function AppView({
   ...otherProps
 }: AppViewProps) {
   const { theme } = useColorScheme(); // ← uses custom hook now
-  const backgroundColor = Colors[theme][type];
+  const backgroundColor = Colors[theme][type].default;
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }

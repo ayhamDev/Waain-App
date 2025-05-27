@@ -15,7 +15,7 @@ const UserCard: React.FC<UserCardProps> = ({ userName, phoneNumber }) => {
     <AppCard>
       <View style={styles.container}>
         <IconButton
-          variant="secondary"
+          variant="primary"
           rounded={false}
           icon={(color: string) => (
             <MingCuteIcon name={"settings_1_fill"} size={24} color={color} />

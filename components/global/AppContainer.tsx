@@ -1,23 +1,14 @@
 import { Image } from "expo-image";
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const AppContainer = ({
   children,
   header,
-  scrollY,
 }: {
   children?: React.ReactNode;
   header: React.ReactNode;
-  scrollY: Animated.SharedValue<number>;
 }) => {
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
-
   return (
     <View style={styles.container}>
       <Image
@@ -27,16 +18,15 @@ const AppContainer = ({
         style={styles.pattern}
         cachePolicy={"memory-disk"}
       />
+
       {header}
-      <Animated.ScrollView
+      <ScrollView
         contentContainerStyle={styles.content}
-        onScroll={scrollHandler}
-        scrollEventThrottle={20}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       >
         {children}
-      </Animated.ScrollView>
+      </ScrollView>
     </View>
   );
 };
@@ -45,13 +35,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: "relative",
+    backgroundColor: "white",
+    zIndex: 0,
   },
   pattern: {
     position: "absolute",
-    top: 20,
+    top: 25,
     width: "100%",
     height: 300,
-    zIndex: 0,
+    zIndex: -1,
   },
   content: {
     paddingTop: 120,

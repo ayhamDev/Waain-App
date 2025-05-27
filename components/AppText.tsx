@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontFamily: "Cairo-Medium",
   },
   heading: {
-    fontSize: 24,
+    fontSize: 22,
     lineHeight: 30,
     fontFamily: "Cairo-Bold",
   },

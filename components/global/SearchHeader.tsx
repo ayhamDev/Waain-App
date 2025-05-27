@@ -1,44 +1,36 @@
+import { Colors } from "@/constants/Styles";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import React, { forwardRef } from "react";
-import { StyleSheet, TextInput } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import { StatusBar, StyleSheet, TextInput, View } from "react-native";
 import TextInputField from "../ui/Input";
 import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
 
-interface SearchHeaderProps {
-  scrollY: Animated.SharedValue<number>;
-}
+interface SearchHeaderProps {}
 
-const SearchHeader = forwardRef<TextInput, SearchHeaderProps>(
-  ({ scrollY }, ref) => {
-    const animatedStyle = useAnimatedStyle(() => {
-      const backgroundOpacity = interpolate(scrollY.value, [0, 50], [0, 1]);
-      const shadowOpacity = interpolate(scrollY.value, [30, 50], [0, 0.2]);
-      const elevation = interpolate(scrollY.value, [30, 50], [0, 4]);
-
-      return {
-        backgroundColor: `rgba(255, 255, 255, ${backgroundOpacity})`,
-        shadowOpacity,
-        elevation,
-      };
-    });
-
-    return (
-      <Animated.View style={[styles.container, animatedStyle]}>
-        <TextInputField
-          ref={ref}
-          startComponent={({ color }) => (
-            <MingCuteIcon size={22} name="search_line" color={color} />
-          )}
-          placeholder="Search..."
-          style={{ flex: 1 }}
-        />
-      </Animated.View>
-    );
-  }
-);
+const SearchHeader = forwardRef<TextInput, SearchHeaderProps>((_, ref) => {
+  const { theme } = useColorScheme();
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          borderBottomColor: Colors[theme].secondary.default,
+          borderBottomWidth: 0.75,
+        },
+        { paddingTop: (StatusBar.currentHeight || 35) + 8 },
+      ]}
+    >
+      <TextInputField
+        ref={ref}
+        startComponent={({ color }) => (
+          <MingCuteIcon size={22} name="search_line" color={color} />
+        )}
+        placeholder="Search..."
+        style={{ flex: 1 }}
+      />
+    </View>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -47,15 +39,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    paddingTop: 50,
     boxSizing: "content-box",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    backgroundColor: "#fff",
     zIndex: 1000,
   },
 });

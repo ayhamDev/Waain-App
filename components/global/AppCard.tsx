@@ -26,7 +26,7 @@ const AppCard: React.FC<AppCardProps> = ({
       style={{
         borderColor,
         backgroundColor: Colors[theme].background.default,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 5,
         padding: 16,
         ...(style || {}),
