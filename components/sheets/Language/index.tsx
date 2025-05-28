@@ -1,5 +1,5 @@
-import { AppText } from "@/components/AppText";
-import { AppView } from "@/components/AppView";
+import { AppText } from "@/components/global/AppText";
+import { AppView } from "@/components/global/AppView";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React, { Ref, useState } from "react";

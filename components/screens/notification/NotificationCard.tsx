@@ -1,6 +1,6 @@
-import { AppText } from "@/components/AppText";
-import { AppView } from "@/components/AppView";
 import AppCard from "@/components/global/AppCard";
+import { AppText } from "@/components/global/AppText";
+import { AppView } from "@/components/global/AppView";
 import { Image } from "expo-image";
 import React from "react";
 import { I18nManager, StyleSheet, TouchableOpacity } from "react-native";

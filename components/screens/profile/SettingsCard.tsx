@@ -1,5 +1,5 @@
-import { AppText } from "@/components/AppText";
 import AppCard from "@/components/global/AppCard";
+import { AppText } from "@/components/global/AppText";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";

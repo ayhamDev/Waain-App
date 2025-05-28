@@ -1,22 +1,16 @@
 import { Colors } from "@/constants/Styles";
+import RNBounceable from "@freakycoder/react-native-bounceable";
 import React from "react";
-import {
-  ActivityIndicator,
-  GestureResponderEvent,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, View, ViewStyle } from "react-native";
 
 type IconButtonProps = {
-  onPress?: (event: GestureResponderEvent) => void;
+  onPress?: () => void;
   icon: (color: string) => React.ReactNode;
   loading?: boolean;
   disabled?: boolean;
   size?: number;
   rounded?: boolean;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" | "danger";
   style?: ViewStyle;
 };
 
@@ -54,14 +48,14 @@ export const IconButton: React.FC<IconButtonProps> = ({
   );
 
   return (
-    <TouchableOpacity
+    <RNBounceable
       onPress={onPress}
-      activeOpacity={0.5}
+      bounceEffectIn={0.75}
       disabled={isDisabled}
       style={buttonStyles}
     >
       <View style={styles.center}>{content}</View>
-    </TouchableOpacity>
+    </RNBounceable>
   );
 };
 
@@ -82,7 +76,7 @@ const styles = StyleSheet.create({
 
 const variantStyles = StyleSheet.create({
   primary: {
-    backgroundColor: Colors.light.primary["300"], // Use your primary color
+    backgroundColor: Colors.light.primary["300"],
   },
   secondary: {
     backgroundColor: Colors.light.primary["950"],
@@ -91,6 +85,9 @@ const variantStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.light.primary["950"],
     backgroundColor: Colors.light.background.default,
+  },
+  danger: {
+    backgroundColor: Colors.light.alart.default,
   },
 });
 
@@ -103,5 +100,8 @@ const variantTextStyles = StyleSheet.create({
   },
   outline: {
     color: Colors.light.primary["950"],
+  },
+  danger: {
+    color: Colors.light.primary["50"],
   },
 });

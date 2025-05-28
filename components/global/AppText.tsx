@@ -19,10 +19,10 @@ export function AppText({ style, type = "default", ...rest }: AppTextProps) {
   const { theme } = useColorScheme();
   const color =
     type === "link"
-      ? Colors[theme].tint
+      ? Colors[theme].secondary.default
       : type === "secondary"
       ? "#8E8E8E"
-      : Colors[theme].text;
+      : Colors[theme].primary[950];
 
   return (
     <Text
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontFamily: "Cairo-Medium",
   },
   secondary: {
-    fontSize: 12,
+    fontSize: 13,
     lineHeight: 20,
     fontFamily: "Cairo-Regular",
   },

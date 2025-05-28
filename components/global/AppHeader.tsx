@@ -6,12 +6,14 @@ import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { IconButton } from "../ui/IconButton";
 import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
+import { AppText } from "./AppText";
 
 interface AppHeaderProps {
   stack?: boolean;
+  title?: string;
 }
 
-const AppHeader = ({ stack = false }: AppHeaderProps) => {
+const AppHeader = ({ stack = false, title }: AppHeaderProps) => {
   const router = useRouter();
   const { theme } = useColorScheme();
 
@@ -37,7 +39,7 @@ const AppHeader = ({ stack = false }: AppHeaderProps) => {
       ) : (
         <View style={{ flexDirection: "row", gap: 20 }}>
           <IconButton
-            onPress={() => console.log("Clicked")}
+            onPress={() => router.push("/profile/address")}
             icon={(color) => (
               <MingCuteIcon name="location_fill" size={24} color={color} />
             )}
@@ -52,18 +54,25 @@ const AppHeader = ({ stack = false }: AppHeaderProps) => {
           />
         </View>
       )}
-      <Image
-        source={require("@/assets/images/Logo.svg")}
-        style={{ width: 113, height: 44 }}
-        cachePolicy={"memory-disk"}
-      />
+      {!title && (
+        <Image
+          source={require("@/assets/images/Logo.svg")}
+          style={{ width: 113, height: 44 }}
+          cachePolicy={"memory-disk"}
+        />
+      )}
+
+      {title && (
+        <AppText type="heading" style={{ textAlign: "right" }}>
+          {title}
+        </AppText>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
     top: 0,
     left: 0,
     right: 0,

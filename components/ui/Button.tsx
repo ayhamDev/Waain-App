@@ -1,21 +1,18 @@
 import { Colors } from "@/constants/Styles";
+import RNBounceable from "@freakycoder/react-native-bounceable";
 import React from "react";
 import {
   ActivityIndicator,
-  GestureResponderEvent,
-  Platform,
-  Pressable,
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
 
 type AppButtonProps = {
   title: string;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: () => void;
   loading?: boolean;
   disabled?: boolean;
   variant?: "primary" | "secondary" | "outline";
@@ -73,38 +70,15 @@ export const AppButton: React.FC<AppButtonProps> = ({
     </View>
   );
 
-  return Platform.OS === "android" ? (
-    <View
-      style={[
-        styles.base,
-        variantStyles[variant],
-        style,
-        { overflow: "hidden" },
-      ]}
-    >
-      <Pressable
-        android_ripple={{
-          color: Colors.light.secondary.default,
-        }}
-        onPress={onPress}
-        disabled={isDisabled}
-        style={[
-          StyleSheet.absoluteFill,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <Content />
-      </Pressable>
-    </View>
-  ) : (
-    <TouchableOpacity
+  return (
+    <RNBounceable
+      bounceEffectIn={0.85}
       onPress={onPress}
-      activeOpacity={0.7}
       disabled={isDisabled}
       style={buttonStyles}
     >
       <Content />
-    </TouchableOpacity>
+    </RNBounceable>
   );
 };
 

@@ -1,16 +1,20 @@
 import { Image } from "expo-image";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, ViewStyle } from "react-native";
 
 const AppContainer = ({
   children,
   header,
+  scroll = true,
+  contentStyle,
 }: {
   children?: React.ReactNode;
   header: React.ReactNode;
+  scroll?: boolean;
+  contentStyle?: ViewStyle;
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <Image
         source={require("@/assets/images/Pattern.svg")}
         contentFit="cover"
@@ -20,13 +24,18 @@ const AppContainer = ({
       />
 
       {header}
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-      >
-        {children}
-      </ScrollView>
+      {scroll ? (
+        <ScrollView
+          contentContainerStyle={[styles.content, contentStyle]}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          nestedScrollEnabled={true}
+        >
+          {children}
+        </ScrollView>
+      ) : (
+        <View style={[styles.content, contentStyle]}>{children}</View>
+      )}
     </View>
   );
 };
@@ -46,7 +55,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   content: {
-    paddingTop: 120,
+    paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 20,
   },

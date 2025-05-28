@@ -1,4 +1,4 @@
-import { AppView } from "@/components/AppView";
+import { AppView } from "@/components/global/AppView";
 import React from "react";
 
 const LoginScreen = () => {

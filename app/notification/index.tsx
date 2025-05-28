@@ -1,4 +1,3 @@
-import { AppText } from "@/components/AppText";
 import AppScreen from "@/components/global/AppScreen";
 import NotificationCard, {
   NotificationCardProps,
@@ -34,11 +33,8 @@ export default function NotificationScreen() {
     },
   ];
   return (
-    <AppScreen stack={true}>
+    <AppScreen stack={true} title={"الاشعارات"}>
       <View style={{ gap: 24 }}>
-        <AppText type="heading" style={{ textAlign: "right" }}>
-          الاشعارات
-        </AppText>
         <View style={{ gap: 10 }}>
           {notificationDummyData.map((item, index) => (
             <NotificationCard rtl={true} key={index} {...item} />

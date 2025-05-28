@@ -1,8 +1,13 @@
-import { AppText } from "@/components/AppText";
+import AppScreen from "@/components/global/AppScreen";
+import { AppText } from "@/components/global/AppText";
 import React from "react";
 
 const StoreScreen = () => {
-  return <AppText>Store</AppText>;
+  return (
+    <AppScreen title="تفاصيل المشتريات" stack={true}>
+      <AppText>HHello</AppText>
+    </AppScreen>
+  );
 };
 
 export default StoreScreen;

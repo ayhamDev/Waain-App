@@ -9,6 +9,10 @@ const ProfileStack = () => {
       }}
     >
       <Stack.Screen name="store/index" />
+      <Stack.Screen name="address/index" />
+      <Stack.Screen name="favourite/index" />
+      <Stack.Screen name="history/index" />
+      <Stack.Screen name="history/details/[id]" />
     </Stack>
   );
 };

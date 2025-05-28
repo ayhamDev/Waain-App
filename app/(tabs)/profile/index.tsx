@@ -1,13 +1,14 @@
 "use client";
 
-import { AppText } from "@/components/AppText";
 import AppScreen from "@/components/global/AppScreen";
+import { AppText } from "@/components/global/AppText";
 import AppSheetProvider from "@/components/provider";
 import SettingsCard from "@/components/screens/profile/SettingsCard";
 import UserCard from "@/components/screens/profile/UserCard";
 import { AppButton } from "@/components/ui/Button";
 import { MingCuteIconsMap } from "@/components/ui/MingCute/MingCuteIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
@@ -24,16 +25,19 @@ export default function ProfileScreen() {
           title: "المفضلة",
           content: "12 منتجات",
           iconName: "heart_fill",
+          onPress: () => router.push("/profile/favourite"),
         },
         {
           title: "سجل المشتريات",
           content: "12 منتجات",
           iconName: "history_2_fill",
+          onPress: () => router.push("/profile/history"),
         },
         {
           title: "العناوين",
           content: "4 عناوين",
           iconName: "location_fill",
+          onPress: () => router.push("/profile/address"),
         },
         {
           title: "اللغة",

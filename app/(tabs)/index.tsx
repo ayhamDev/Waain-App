@@ -1,7 +1,7 @@
 "use client";
 
-import { AppText } from "@/components/AppText";
 import AppScreen from "@/components/global/AppScreen";
+import { AppText } from "@/components/global/AppText";
 
 export default function HomeScreen() {
   return (
