@@ -36,6 +36,7 @@ RUN yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses && \
 
 # Install EAS CLI globally (Node is already installed in base image)
 RUN npm install --global eas-cli
+RUN npm install --global bun
 
 # Set working directory
 WORKDIR /app
