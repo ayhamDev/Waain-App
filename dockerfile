@@ -1,16 +1,19 @@
 FROM node:20
 
-# Install dependencies: openjdk17, bash, curl, git, unzip, wget
-RUN apk update && apk add --no-cache \
-    openjdk17 \
+# Install dependencies: openjdk-17-jdk, curl, git, unzip, wget
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    openjdk-17-jdk \
     bash \
     curl \
     git \
     unzip \
-    wget
+    wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Set JAVA_HOME and add to PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+# Set JAVA_HOME and update PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Set Android SDK root
@@ -24,7 +27,7 @@ RUN mkdir -p $ANDROID_SDK_ROOT/cmdline-tools && \
     rm cmdline-tools.zip && \
     mv cmdline-tools latest
 
-# Add Android SDK cmdline-tools and platform-tools to PATH
+# Add Android SDK tools to PATH
 ENV PATH="$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools"
 
 # Accept licenses and install SDK components
@@ -34,19 +37,18 @@ RUN yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses && \
     "platforms;android-35" \
     "build-tools;35.0.0"
 
-# Install EAS CLI globally (Node is already installed in base image)
-RUN npm install --global eas-cli
-RUN npm install --global bun
+# Install EAS CLI and Bun globally
+RUN npm install --global eas-cli bun
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json and install dependencies
+# Copy and install dependencies
 COPY package*.json ./
-RUN npm i
+RUN npm install
 
 # Copy rest of the app
 COPY . .
 
-# Default command to build app locally using eas
+# Default build command
 CMD ["eas", "build", "--platform", "android", "--profile", "preview", "--local"]
