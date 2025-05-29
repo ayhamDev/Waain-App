@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20
 
 # Install dependencies: openjdk17, bash, curl, git, unzip, wget
 RUN apk update && apk add --no-cache \

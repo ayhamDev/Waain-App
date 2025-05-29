@@ -14,8 +14,6 @@ ios/**
 build
 dist
 artifacts
-.env
-.env.*
 .DS_Store
 .vscode
 .idea
