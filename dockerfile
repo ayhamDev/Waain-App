@@ -1,20 +1,20 @@
-FROM ubuntu:22.04
+FROM node:20-alpine
 
-# Avoid interactive prompts
+# Avoid interactive prompts (mostly for Debian but keeping for convention)
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install core dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+# Install core dependencies including openjdk-17, curl, git, unzip, wget
+RUN apk update && apk add --no-cache \
+    openjdk17 \
     curl \
     git \
     unzip \
-    openjdk-17-jdk \
     wget \
-    && rm -rf /var/lib/apt/lists/*
+    bash \
+    && rm -rf /var/cache/apk/*
 
-# Set JAVA_HOME environment variable
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+# Set JAVA_HOME environment variable (Alpine path for openjdk17)
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Set up Android SDK
@@ -35,12 +35,8 @@ RUN yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses && \
     "platforms;android-35" \
     "build-tools;35.0.0"
 
-# Install Node.js and EAS CLI (no Yarn)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends nodejs && \
-    npm install --global eas-cli && \
-    rm -rf /var/lib/apt/lists/*
+# Install EAS CLI globally via npm (Node already included in node:20-alpine)
+RUN npm install --global eas-cli
 
 # Set working directory
 WORKDIR /app
@@ -54,24 +50,3 @@ COPY . .
 
 # Default build command
 CMD ["eas", "build", "--platform", "android", "--profile", "preview", "--local"]
-
-# --------------------------------------
-# Usage:
-# 1. Build the Docker image:
-#    docker build -t my-expo-eas-local .
-#
-# 2. Run the container (mount your project directory and store artifacts locally):
-#    docker run --rm -it \
-#      -v $(pwd):/app \
-#      -v ~/.eas:/root/.eas \  # persist EAS credentials
-#      -v ~/.android:/root/.android \  # persist Android SDK settings
-#      -e EAS_BUILD_AUTOCLEAN=false \  # prevent cleanup of build cache
-#      my-expo-eas-local
-#
-# 3. After the build completes, the APK/AAB will be available under ./build
-#
-# Notes:
-# - Ensure you’ve logged in with 'eas login' at least once to cache credentials under ~/.eas.
-# - Customize volume mounts or environment variables (e.g., ANDROID_HOME) as needed.
-# - Adjust the image tag ('my-expo-eas-local') to your naming convention.
-# --------------------------------------
