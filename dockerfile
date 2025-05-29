@@ -1,4 +1,4 @@
-FROM mobiledevops/android-sdk-image:34.0.0
+FROM thyrlian/android-sdk:latest
 
 USER root
 
