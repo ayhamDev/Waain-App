@@ -1,8 +1,12 @@
-## Base image with Android SDK 34
+# Base image with Android SDK 34
 FROM mobiledevops/android-sdk-image:34.0.0
 
-# Install Node.js, Yarn, Expo CLI and EAS CLI
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+# Switch to root user to allow package installation
+USER root
+
+# Install Node.js 18, Expo CLI, and EAS CLI
+RUN apt-get update && apt-get install -y curl gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get update \
     && apt-get install -y nodejs \
     && npm install -g expo-cli eas-cli \
@@ -11,15 +15,15 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Set working directory
 WORKDIR /app
 
-# Copy package manifest and lockfile for dependency caching
-COPY package*.json  ./
+# Copy package manifest and lockfile
+COPY package*.json ./
 
 # Install dependencies
-RUN npm install --frozen-lockfile
+RUN npm install
 
 # Copy the rest of your Expo project
 COPY . .
 
-# Default entrypoint to EAS CLI
+# Set EAS CLI as the default entrypoint
 ENTRYPOINT ["eas"]
-CMD ["build", "--platform", "android", "--profile", "preview","--local"]
+CMD ["build", "--platform", "android", "--profile", "preview", "--local"]
