@@ -29,7 +29,6 @@ const AppContainer = ({
           contentContainerStyle={[styles.content, contentStyle]}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          nestedScrollEnabled={true}
         >
           {children}
         </ScrollView>

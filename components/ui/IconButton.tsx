@@ -82,7 +82,7 @@ const variantStyles = StyleSheet.create({
     backgroundColor: Colors.light.primary["950"],
   },
   outline: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: Colors.light.primary["950"],
     backgroundColor: Colors.light.background.default,
   },

@@ -20,6 +20,7 @@ export default function ProfileScreen() {
           title: "السوبرماركت المفضل",
           content: "بن داود",
           iconName: "shopping_cart_1_fill",
+          onPress: () => router.push("/profile/store"),
         },
         {
           title: "المفضلة",

@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React, { forwardRef } from "react";
 import {
@@ -43,7 +44,7 @@ const TextInputField = forwardRef<TextInput, Props>(
     },
     ref
   ) => {
-    const { theme } = useColorScheme() ?? "light";
+    const { theme } = useColorScheme() ?? { theme: "light" };
     const isDark = theme === "dark";
     const isErrored = !!errorMessage;
 
@@ -100,7 +101,6 @@ const TextInputField = forwardRef<TextInput, Props>(
               rtl && styles.rtlText,
               inputStyle,
               style,
-              { flex: 1 },
               disabled && styles.inputTextDisabled,
               isDark && styles.inputTextDark,
             ]}
@@ -124,12 +124,12 @@ const TextInputField = forwardRef<TextInput, Props>(
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    marginBottom: 16,
+    flex: 1,
   },
   label: {
+    fontFamily: "Cairo-Medium",
     marginBottom: 6,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500",
     color: "#333",
   },
@@ -143,17 +143,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
-    paddingVertical: 10,
     borderRadius: 8,
-    borderWidth: 0.75,
-    borderColor: "#ccc",
+    borderWidth: 0.6,
+    borderColor: Colors.light.secondary.default,
     backgroundColor: "white",
+    height: 50,
   },
   input: {
+    flex: 1,
+    fontFamily: "Cairo-Medium",
     fontSize: 16,
     color: "#000",
-    paddingVertical: 0,
-    paddingHorizontal: 0,
+    paddingVertical: 10, // Added vertical padding for vertical centering
+    paddingHorizontal: 8, // Add some horizontal padding to avoid text touching sides
+    textAlignVertical: "center", // Important for vertical alignment on Android
   },
   inputTextDark: {
     color: "#fff",

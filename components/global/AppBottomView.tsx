@@ -1,8 +1,12 @@
-// AppBottomView.tsx
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import React from "react";
-import { View, ViewProps, ViewStyle } from "react-native";
+import React, { useEffect } from "react";
+import { ViewProps, ViewStyle } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 interface AppBottomViewProps extends ViewProps {
   children: React.ReactNode;
@@ -14,11 +18,31 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
   ...rest
 }) => {
   const { theme } = useColorScheme(); // should return "light" | "dark"
+  const translateY = useSharedValue(100);
+
+  useEffect(() => {
+    let animateRef = setTimeout(() => {
+      translateY.value = withSpring(70, {
+        damping: 5,
+        stiffness: 75,
+      });
+    }, 250);
+    return () => {
+      clearTimeout(animateRef);
+    };
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   return (
-    <View style={[styles.container(Colors[theme]), style]} {...rest}>
+    <Animated.View
+      style={[styles.container(Colors[theme]), animatedStyle, style]}
+      {...rest}
+    >
       {children}
-    </View>
+    </Animated.View>
   );
 };
 
@@ -29,6 +53,7 @@ const styles = {
     left: 0,
     right: 0,
     paddingVertical: 24,
+    paddingBottom: 100,
     paddingHorizontal: 24,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,

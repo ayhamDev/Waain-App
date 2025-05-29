@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -33,7 +34,14 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: Colors[theme].background.default,
+          },
+        }}
+      >
         {/* main */}
         <Stack.Screen name="(tabs)" />
         {/* screens stacks */}

@@ -7,7 +7,7 @@ import { AppView } from "./AppView";
 type AppCardProps = {
   children: React.ReactNode;
   variant?: "primary" | "secondary";
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[] | undefined;
   selected?: boolean;
 };
 
@@ -17,6 +17,8 @@ const AppCard: React.FC<AppCardProps> = ({
   selected = false,
   style,
 }) => {
+  selected ? (variant = "primary") : null;
+
   const { theme } = useColorScheme();
   const borderColor =
     variant === "primary"

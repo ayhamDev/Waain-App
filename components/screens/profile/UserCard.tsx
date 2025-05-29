@@ -2,6 +2,7 @@ import AppCard from "@/components/global/AppCard";
 import { AppText } from "@/components/global/AppText";
 import { IconButton } from "@/components/ui/IconButton";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -11,12 +12,14 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = ({ userName, phoneNumber }) => {
+  const router = useRouter();
   return (
     <AppCard>
       <View style={styles.container}>
         <IconButton
           variant="primary"
           rounded={false}
+          onPress={() => router.push("/profile/edit")}
           icon={(color: string) => (
             <MingCuteIcon name={"settings_1_fill"} size={24} color={color} />
           )}

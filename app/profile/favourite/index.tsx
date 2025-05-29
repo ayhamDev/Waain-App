@@ -47,7 +47,7 @@ export default function FavouriteScreen() {
             }}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={Array.from({ length: 100 }, (value, index) => index)}
+            data={Array.from({ length: 10 }, (value, index) => index)}
             renderItem={({ item }) => (
               <RNBounceable>
                 <AppCard

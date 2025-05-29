@@ -1,9 +1,8 @@
-import AppBadge from "@/components/global/AppBadge";
 import AppBottomView from "@/components/global/AppBottomView";
 import AppScreen from "@/components/global/AppScreen";
 import { AppSeperator } from "@/components/global/AppSeperator";
 import { AppText } from "@/components/global/AppText";
-import { AppView } from "@/components/global/AppView";
+import ProductCardHistory from "@/components/product/ProductCardHistory";
 import { AppButton } from "@/components/ui/Button";
 import TextInputField from "@/components/ui/Input";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
@@ -11,12 +10,59 @@ import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Image } from "expo-image";
 import React from "react";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
+const products = [
+  {
+    productName: "تفاح أحمر",
+    productType: "فاكهة",
+    weight: "1 كيلو",
+    price: "8﷼",
+    quantity: 3,
+    imageUrl: "https://placehold.co/125x125/png?text=Apple",
+  },
+  {
+    productName: "حليب كامل الدسم",
+    productType: "مشروبات",
+    weight: "1 لتر",
+    price: "6﷼",
+    quantity: 1,
+    imageUrl: "https://placehold.co/125x125/png?text=Milk",
+  },
+  {
+    productName: "دقيق أبيض فاخر",
+    productType: "مواد أساسية",
+    weight: "5 كيلو",
+    price: "18﷼",
+    quantity: 2,
+    imageUrl: "https://placehold.co/125x125/png?text=Flour",
+  },
+  {
+    productName: "رز بسمتي",
+    productType: "أرز",
+    weight: "10 كيلو",
+    price: "48﷼",
+    quantity: 1,
+    imageUrl: "https://placehold.co/125x125/png?text=Rice",
+  },
+  {
+    productName: "زيت نباتي",
+    productType: "زيوت",
+    weight: "1.8 لتر",
+    price: "15﷼",
+    quantity: 2,
+    imageUrl: "https://placehold.co/125x125/png?text=Oil",
+  },
+];
 
 const HistoryDetailsScreen = () => {
   const { theme } = useColorScheme();
   return (
-    <AppScreen title="تفاصيل المشتريات" stack={true} contentStyle={{ flex: 1 }}>
+    <AppScreen
+      title="تفاصيل المشتريات"
+      stack={true}
+      scroll={false}
+      contentStyle={{ flex: 1, paddingBottom: 100 }}
+    >
       <View style={{ gap: 20 }}>
         <Image
           style={{
@@ -76,81 +122,34 @@ const HistoryDetailsScreen = () => {
         <AppSeperator />
         <TextInputField
           startComponent={({ color }) => (
-            <MingCuteIcon size={22} name="search_line" color={color} />
+            <MingCuteIcon size={20} name="search_line" color={color} />
           )}
           placeholder="Search..."
-          style={{ flex: 1 }}
+          containerStyle={{
+            marginBottom: 55,
+          }}
         />
       </View>
-      <View>
-        <AppView
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            gap: 15,
-          }}
-        >
-          <View style={{ flex: 1, gap: 5, marginBottom: 10 }}>
-            <View style={{ alignSelf: "flex-end" }}>
-              <AppBadge style={{ alignSelf: "flex-end" }} variant="primary">
-                <AppText>نوع المنتج</AppText>
-              </AppBadge>
-              <AppText
-                style={{ textAlign: "right" }}
-                type="defaultBold"
-                numberOfLines={2}
-                ellipsizeMode="tail"
-              >
-                اسم المنتج
-              </AppText>
-              <AppText style={{ textAlign: "right" }} type="secondary">
-                1 كيلو
-              </AppText>
-            </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <View>
-                <AppText
-                  type="secondary"
-                  style={{ fontSize: 14, textAlign: "right" }}
-                >
-                  السعر
-                </AppText>
-                <AppText style={{ textAlign: "right" }} type="defaultBold">
-                  14ريال
-                </AppText>
-              </View>
-              <View>
-                <AppText
-                  type="secondary"
-                  style={{ fontSize: 14, textAlign: "right" }}
-                >
-                  الكمية
-                </AppText>
-                <AppText style={{ textAlign: "right" }} type="defaultBold">
-                  2
-                </AppText>
-              </View>
-            </View>
+      <FlatList
+        contentContainerStyle={{ paddingTop: 20 }}
+        data={products}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={{ marginBottom: 20 }}>
+            <ProductCardHistory
+              productName={item.productName}
+              productType={item.productType}
+              weight={item.weight}
+              price={item.price}
+              quantity={item.quantity}
+              imageUrl={item.imageUrl}
+              onPress={() => console.log(`Clicked: ${item.productName}`)}
+            />
           </View>
-          <Image
-            style={{
-              alignSelf: "flex-start",
-              height: 125,
-              width: 125,
-              borderRadius: 12,
-              backgroundColor: Colors[theme].secondary.default,
-            }}
-            contentFit="contain"
-            contentPosition={"center"}
-            source={{
-              uri: "https://placehold.co/125x125/webp",
-            }}
-          />
-        </AppView>
-        <AppSeperator />
-      </View>
+        )}
+      />
       <AppBottomView>
         <AppButton
           onPress={() => {}}
