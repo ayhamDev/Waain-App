@@ -6,12 +6,13 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 // Set the animation options. This is optional.
 SplashScreen.setOptions({
-  duration: 1000,
+  duration: 500,
   fade: true,
 });
 
@@ -32,7 +33,7 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
       <Stack
         screenOptions={{
@@ -52,6 +53,6 @@ export default function RootLayout() {
         <Stack.Screen name="auth" />
         <Stack.Screen name="+not-found" />
       </Stack>
-    </>
+    </SafeAreaView>
   );
 }

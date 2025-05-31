@@ -74,7 +74,7 @@ export default function ProfileScreen() {
             <AppButton
               title="تسجيل الخروج"
               variant="secondary"
-              onPress={() => {}}
+              onPress={() => router.replace("/auth/login")}
               startComponent={(color) => (
                 <MaterialCommunityIcons name="logout" size={24} color={color} />
               )}

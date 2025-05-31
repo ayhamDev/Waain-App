@@ -18,7 +18,7 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
   ...rest
 }) => {
   const { theme } = useColorScheme(); // should return "light" | "dark"
-  const translateY = useSharedValue(100);
+  const translateY = useSharedValue(150);
 
   useEffect(() => {
     let animateRef = setTimeout(() => {
@@ -26,7 +26,7 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
         damping: 5,
         stiffness: 75,
       });
-    }, 250);
+    }, 300);
     return () => {
       clearTimeout(animateRef);
     };
@@ -47,13 +47,14 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
 };
 
 const styles = {
-  container: (colors: any): ViewStyle => ({
+  container: (colors: (typeof Colors)["light"]): ViewStyle => ({
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     paddingVertical: 24,
-    paddingBottom: 100,
+
+    paddingBottom: 80,
     paddingHorizontal: 24,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,

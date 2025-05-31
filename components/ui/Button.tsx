@@ -12,7 +12,7 @@ import {
 
 type AppButtonProps = {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
   variant?: "primary" | "secondary" | "outline";

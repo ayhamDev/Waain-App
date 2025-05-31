@@ -26,9 +26,10 @@ const ProfileEditScreen = () => {
           >
             <IconButton
               rounded={false}
+              variant="primary"
               style={{ height: 50, width: 50 }}
               icon={(color) => (
-                <MingCuteIcon name="edit_2_fill" size={24} color={color} />
+                <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
             />
             <TextInputField
@@ -53,9 +54,10 @@ const ProfileEditScreen = () => {
           >
             <IconButton
               rounded={false}
+              variant="primary"
               style={{ height: 50, width: 50 }}
               icon={(color) => (
-                <MingCuteIcon name="edit_2_fill" size={24} color={color} />
+                <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
             />
             <AppPhoneInput rtl={true} label="رقم الجوال" disabled={true} />
@@ -65,9 +67,10 @@ const ProfileEditScreen = () => {
           >
             <IconButton
               rounded={false}
+              variant="primary"
               style={{ height: 50, width: 50 }}
               icon={(color) => (
-                <MingCuteIcon name="edit_2_fill" size={24} color={color} />
+                <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
             />
             <TextInputField

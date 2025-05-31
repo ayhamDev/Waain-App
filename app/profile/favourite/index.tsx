@@ -24,7 +24,7 @@ export default function FavouriteScreen() {
         margin: 0,
       }}
     >
-      <View style={{ gap: 0 }}>
+      <View style={{ gap: 20 }}>
         <View style={{ paddingHorizontal: 20 }}>
           <TextInputField
             startComponent={({ color }) => (
@@ -37,13 +37,14 @@ export default function FavouriteScreen() {
         <View
           style={{
             paddingHorizontal: 5,
+            marginTop: 30,
           }}
         >
           <FlatGrid
             itemDimension={130}
             spacing={15}
             contentContainerStyle={{
-              paddingBottom: 250,
+              paddingBottom: 100,
             }}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}

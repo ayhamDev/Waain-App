@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React, { forwardRef } from "react";
-import { StatusBar, StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import TextInputField from "../ui/Input";
 import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
 
@@ -17,16 +17,15 @@ const SearchHeader = forwardRef<TextInput, SearchHeaderProps>((_, ref) => {
           borderBottomColor: Colors[theme].secondary.default,
           borderBottomWidth: 0.75,
         },
-        { paddingTop: (StatusBar.currentHeight || 35) + 8 },
+        { paddingTop: 5 },
       ]}
     >
       <TextInputField
-        ref={ref}
         startComponent={({ color }) => (
-          <MingCuteIcon size={22} name="search_line" color={color} />
+          <MingCuteIcon size={20} name="search_line" color={color} />
         )}
+        ref={ref}
         placeholder="Search..."
-        style={{ flex: 1 }}
       />
     </View>
   );

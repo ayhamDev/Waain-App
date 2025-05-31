@@ -78,5 +78,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textDecorationLine: "underline",
     fontFamily: "Cairo-Regular",
+    color: "#007BFF",
   },
 });

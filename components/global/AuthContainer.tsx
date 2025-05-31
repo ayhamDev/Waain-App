@@ -2,7 +2,7 @@ import { Image } from "expo-image";
 import React from "react";
 import { ScrollView, StyleSheet, View, ViewStyle } from "react-native";
 
-const AppContainer = ({
+const AuthContainer = ({
   children,
   header,
   scroll = true,
@@ -15,14 +15,18 @@ const AppContainer = ({
 }) => {
   return (
     <View style={[styles.container]}>
-      <Image
-        source={require("@/assets/images/Pattern.svg")}
-        contentFit="cover"
-        contentPosition="center"
-        style={styles.pattern}
-        cachePolicy={"memory-disk"}
-      />
-      {header}
+      <View style={{ marginTop: -50 }}>
+        <Image
+          source={require("@/assets/images/AuthPattern.svg")}
+          contentFit="cover"
+          contentPosition="center"
+          style={styles.pattern}
+          cachePolicy={"memory-disk"}
+        />
+
+        {header}
+      </View>
+
       {scroll ? (
         <ScrollView
           contentContainerStyle={[styles.content, contentStyle]}
@@ -47,16 +51,16 @@ const styles = StyleSheet.create({
   },
   pattern: {
     position: "absolute",
-    top: 0,
+    top: 25,
     width: "100%",
-    height: 300,
+    height: 220,
     zIndex: -1,
   },
   content: {
-    paddingTop: 80,
+    paddingTop: 20,
     paddingBottom: 20,
     paddingHorizontal: 20,
   },
 });
 
-export default AppContainer;
+export default AuthContainer;

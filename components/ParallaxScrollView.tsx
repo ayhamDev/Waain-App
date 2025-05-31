@@ -11,7 +11,7 @@ import { AppView } from "@/components/global/AppView";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const HEADER_HEIGHT = 250;
+const HEADER_HEIGHT = 220;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
@@ -29,6 +29,12 @@ export default function ParallaxScrollView({
   const bottom = useBottomTabOverflow();
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
+      opacity: interpolate(
+        scrollOffset.value,
+        [-50, 0, HEADER_HEIGHT / 2],
+        [1, 1, 0.5]
+        // Optional: clamp the values to prevent overflow
+      ),
       transform: [
         {
           translateY: interpolate(
@@ -59,7 +65,9 @@ export default function ParallaxScrollView({
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: headerBackgroundColor[theme] },
+            {
+              backgroundColor: headerBackgroundColor[theme],
+            },
             headerAnimatedStyle,
           ]}
         >
@@ -84,5 +92,6 @@ const styles = StyleSheet.create({
     padding: 32,
     gap: 16,
     overflow: "hidden",
+    elevation: 1,
   },
 });

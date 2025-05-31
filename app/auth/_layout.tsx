@@ -6,22 +6,16 @@ import "react-native-reanimated";
 export default function AuthLayout() {
   const { theme } = useColorScheme();
   return (
-    <Stack>
-      <Stack.Screen
-        name="login/index"
-        options={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: Colors[theme].background.default,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="register/index"
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: Colors[theme].background.default,
+        },
+      }}
+    >
+      <Stack.Screen name="login/index" />
+      <Stack.Screen name="register/index" />
     </Stack>
   );
 }

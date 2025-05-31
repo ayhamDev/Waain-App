@@ -1,12 +1,12 @@
 "use client";
 
 import AppScreen from "@/components/global/AppScreen";
-import { AppText } from "@/components/global/AppText";
+import MarketsCarousel from "@/components/market/MarketsCarousel";
 
 export default function HomeScreen() {
   return (
     <AppScreen>
-      <AppText>Hello</AppText>
+      <MarketsCarousel />
     </AppScreen>
   );
 }

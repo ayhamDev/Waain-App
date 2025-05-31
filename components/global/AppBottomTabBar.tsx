@@ -100,7 +100,6 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
           backgroundColor: Colors[theme].background.default,
           borderTopColor: Colors[theme].secondary.default,
           borderTopWidth: 0.75,
-          marginBottom: 5,
         },
       ]}
     >

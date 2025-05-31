@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React, { forwardRef } from "react";
 import {
@@ -44,7 +43,7 @@ const TextInputField = forwardRef<TextInput, Props>(
     },
     ref
   ) => {
-    const { theme } = useColorScheme() ?? { theme: "light" };
+    const { theme } = useColorScheme() ?? "light";
     const isDark = theme === "dark";
     const isErrored = !!errorMessage;
 
@@ -101,6 +100,7 @@ const TextInputField = forwardRef<TextInput, Props>(
               rtl && styles.rtlText,
               inputStyle,
               style,
+              { flex: 1 },
               disabled && styles.inputTextDisabled,
               isDark && styles.inputTextDark,
             ]}
@@ -127,11 +127,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    fontFamily: "Cairo-Medium",
     marginBottom: 6,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
     color: "#333",
+    fontFamily: "Cairo-Medium",
   },
   labelDark: {
     color: "#fff",
@@ -143,20 +143,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
+    paddingVertical: 10,
     borderRadius: 8,
-    borderWidth: 0.6,
-    borderColor: Colors.light.secondary.default,
+    borderWidth: 0.75,
+    borderColor: "#ccc",
     backgroundColor: "white",
-    height: 50,
+    minHeight: 45,
   },
   input: {
-    flex: 1,
     fontFamily: "Cairo-Medium",
     fontSize: 16,
     color: "#000",
-    paddingVertical: 10, // Added vertical padding for vertical centering
-    paddingHorizontal: 8, // Add some horizontal padding to avoid text touching sides
-    textAlignVertical: "center", // Important for vertical alignment on Android
+    paddingVertical: 0,
+    paddingHorizontal: 6,
+    height: 30,
   },
   inputTextDark: {
     color: "#fff",
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   sideComponent: {
-    marginHorizontal: 6,
+    marginHorizontal: 2,
   },
 });
 

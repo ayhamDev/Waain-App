@@ -3,7 +3,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { IconButton } from "../ui/IconButton";
 import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
 import { AppText } from "./AppText";
@@ -25,7 +25,7 @@ const AppHeader = ({ stack = false, title }: AppHeaderProps) => {
           borderBottomColor: Colors[theme].secondary.default,
           borderBottomWidth: 0.75,
         },
-        { paddingTop: (StatusBar.currentHeight || 35) + 8 },
+        { paddingTop: 5 },
       ]}
     >
       {stack ? (
@@ -73,6 +73,7 @@ const AppHeader = ({ stack = false, title }: AppHeaderProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
