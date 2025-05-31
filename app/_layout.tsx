@@ -40,6 +40,7 @@ export default function RootLayout() {
           headerShown: false,
           contentStyle: {
             backgroundColor: Colors[theme].background.default,
+            flex: 1,
           },
         }}
       >

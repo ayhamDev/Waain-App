@@ -10,17 +10,17 @@ const dummyStats = [
   {
     id: "1",
     number: 4,
-    imageUri: "https://placehold.co/120x50/webp",
+    imageUri: "https://placehold.co/120x50?text=market1",
   },
   {
     id: "2",
     number: 12,
-    imageUri: "https://placehold.co/120x50/gray",
+    imageUri: "https://placehold.co/120x50?text=market2",
   },
   {
     id: "3",
     number: 98,
-    imageUri: "https://placehold.co/120x50/green",
+    imageUri: "https://placehold.co/120x50?text=market3",
   },
 ];
 
@@ -31,9 +31,9 @@ const StoreScreen = () => {
       title="السوبرماركت المفضل"
       stack={true}
       scroll={false}
-      contentStyle={{ paddingBottom: 180 }}
+      contentStyle={{ paddingBottom: 0 }}
     >
-      <View style={{ gap: 5, marginBottom: 10 }}>
+      <View style={{ gap: 10, marginBottom: 50 }}>
         <TextInputField
           startComponent={({ color }) => (
             <MingCuteIcon size={22} name="search_line" color={color} />
@@ -52,7 +52,9 @@ const StoreScreen = () => {
             selected={true}
           />
         )}
-        contentContainerStyle={{ padding: 0, gap: 16 }}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 0, gap: 16, paddingBottom: 60 }}
       />
 
       {/* <AppCard

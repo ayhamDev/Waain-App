@@ -162,6 +162,7 @@ export default function TabLayout() {
         headerShown: false,
         sceneStyle: {
           backgroundColor: "white",
+          flex: 1,
         },
       }}
       tabBar={(props) => <MyTabBar {...props} />}

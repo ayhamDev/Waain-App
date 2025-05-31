@@ -4,14 +4,16 @@ import AppScreen from "@/components/global/AppScreen";
 import { AppText } from "@/components/global/AppText";
 import SettingsCard from "@/components/screens/profile/SettingsCard";
 import UserCard from "@/components/screens/profile/UserCard";
+import LanguageSheet from "@/components/sheets/Language";
 import { AppButton } from "@/components/ui/Button";
 import { MingCuteIconsMap } from "@/components/ui/MingCute/MingCuteIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
+import { ActionSheetRef } from "react-native-actions-sheet";
 export default function ProfileScreen() {
+  const sheetRef = useRef<ActionSheetRef | null>(null);
   const settingsOptions = useMemo(
     () =>
       [
@@ -43,7 +45,7 @@ export default function ProfileScreen() {
           title: "اللغة",
           content: "عربي",
           iconName: "translate_2_fill",
-          onPress: () => SheetManager.show("Language-sheet"),
+          onPress: () => sheetRef.current?.show(),
         },
         {
           title: "رفع بلاغ",
@@ -60,39 +62,42 @@ export default function ProfileScreen() {
   );
 
   return (
-    <AppScreen>
-      <View style={{ gap: 24 }}>
-        <View style={{ gap: 10 }}>
-          <AppText style={{ textAlign: "right" }} type="heading">
-            الملف الشخصي
-          </AppText>
-        </View>
-        <View style={{ gap: 10 }}>
-          <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
-          <AppButton
-            title="تسجيل الخروج"
-            variant="secondary"
-            onPress={() => router.replace("/auth/login")}
-            startComponent={(color) => (
-              <MaterialCommunityIcons name="logout" size={24} color={color} />
-            )}
-          />
-        </View>
-
-        <View style={{ gap: 12 }}>
-          {settingsOptions.map((item, index) => (
-            <SettingsCard
-              key={index}
-              variant="primary"
-              label={item.title}
-              value={item.content}
-              IconName={item.iconName}
-              onPress={item?.onPress}
+    <>
+      <AppScreen>
+        <View style={{ gap: 24 }}>
+          <View style={{ gap: 10 }}>
+            <AppText style={{ textAlign: "right" }} type="heading">
+              الملف الشخصي
+            </AppText>
+          </View>
+          <View style={{ gap: 10 }}>
+            <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
+            <AppButton
+              title="تسجيل الخروج"
+              variant="secondary"
+              onPress={() => router.replace("/auth/login")}
+              startComponent={(color) => (
+                <MaterialCommunityIcons name="logout" size={24} color={color} />
+              )}
             />
-          ))}
+          </View>
+
+          <View style={{ gap: 12 }}>
+            {settingsOptions.map((item, index) => (
+              <SettingsCard
+                key={index}
+                variant="primary"
+                label={item.title}
+                value={item.content}
+                IconName={item.iconName}
+                onPress={item?.onPress}
+              />
+            ))}
+          </View>
         </View>
-      </View>
-      {/* Sheets */}
-    </AppScreen>
+        {/* Sheets */}
+      </AppScreen>
+      <LanguageSheet ref={sheetRef} />
+    </>
   );
 }

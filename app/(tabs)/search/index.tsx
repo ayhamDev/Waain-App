@@ -4,7 +4,6 @@ import AppContainer from "@/components/global/AppContainer";
 import SearchHeader from "@/components/global/SearchHeader";
 import BrowseMarkets from "@/components/market/BrowseMarkets";
 import BrowseProducts from "@/components/product/BrowseProducts";
-import { useFocusEffect } from "expo-router";
 import { useRef } from "react";
 import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
@@ -14,14 +13,6 @@ export default function SearchScreen() {
   const inputRef = useRef<TextInput>(null);
   const scrollY = useSharedValue(0);
 
-  useFocusEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!inputRef?.current?.isFocused()) {
-        inputRef?.current?.focus();
-      }
-    }, 250); // Android sometimes needs a delay
-    return () => clearTimeout(timeout);
-  });
   return (
     <AppContainer
       contentStyle={{
