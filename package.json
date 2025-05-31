@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "pm2": "pm2 start $(which bun) --name bun-app -- start",
     "lint": "expo lint"
   },
   "dependencies": {
