@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
-    paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 0.75,
     borderColor: "#ccc",
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     color: "#000",
     paddingVertical: 0,
     paddingHorizontal: 6,
-    height: 30,
+    height: "100%",
   },
   inputTextDark: {
     color: "#fff",
@@ -182,9 +181,6 @@ const styles = StyleSheet.create({
     color: "#ff4d4f",
     fontSize: 12,
     marginTop: 4,
-  },
-  sideComponent: {
-    marginHorizontal: 2,
   },
 });
 

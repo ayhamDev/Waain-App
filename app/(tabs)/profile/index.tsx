@@ -2,7 +2,6 @@
 
 import AppScreen from "@/components/global/AppScreen";
 import { AppText } from "@/components/global/AppText";
-import AppSheetProvider from "@/components/provider";
 import SettingsCard from "@/components/screens/profile/SettingsCard";
 import UserCard from "@/components/screens/profile/UserCard";
 import { AppButton } from "@/components/ui/Button";
@@ -61,41 +60,39 @@ export default function ProfileScreen() {
   );
 
   return (
-    <AppSheetProvider>
-      <AppScreen>
-        <View style={{ gap: 24 }}>
-          <View style={{ gap: 10 }}>
-            <AppText style={{ textAlign: "right" }} type="heading">
-              الملف الشخصي
-            </AppText>
-          </View>
-          <View style={{ gap: 10 }}>
-            <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
-            <AppButton
-              title="تسجيل الخروج"
-              variant="secondary"
-              onPress={() => router.replace("/auth/login")}
-              startComponent={(color) => (
-                <MaterialCommunityIcons name="logout" size={24} color={color} />
-              )}
-            />
-          </View>
-
-          <View style={{ gap: 12 }}>
-            {settingsOptions.map((item, index) => (
-              <SettingsCard
-                key={index}
-                variant="primary"
-                label={item.title}
-                value={item.content}
-                IconName={item.iconName}
-                onPress={item?.onPress}
-              />
-            ))}
-          </View>
+    <AppScreen>
+      <View style={{ gap: 24 }}>
+        <View style={{ gap: 10 }}>
+          <AppText style={{ textAlign: "right" }} type="heading">
+            الملف الشخصي
+          </AppText>
         </View>
-        {/* Sheets */}
-      </AppScreen>
-    </AppSheetProvider>
+        <View style={{ gap: 10 }}>
+          <UserCard userName="Ali Nafa" phoneNumber="+966 000 000 000" />
+          <AppButton
+            title="تسجيل الخروج"
+            variant="secondary"
+            onPress={() => router.replace("/auth/login")}
+            startComponent={(color) => (
+              <MaterialCommunityIcons name="logout" size={24} color={color} />
+            )}
+          />
+        </View>
+
+        <View style={{ gap: 12 }}>
+          {settingsOptions.map((item, index) => (
+            <SettingsCard
+              key={index}
+              variant="primary"
+              label={item.title}
+              value={item.content}
+              IconName={item.iconName}
+              onPress={item?.onPress}
+            />
+          ))}
+        </View>
+      </View>
+      {/* Sheets */}
+    </AppScreen>
   );
 }

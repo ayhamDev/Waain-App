@@ -2,13 +2,17 @@
 
 import AppContainer from "@/components/global/AppContainer";
 import SearchHeader from "@/components/global/SearchHeader";
+import BrowseMarkets from "@/components/market/BrowseMarkets";
+import BrowseProducts from "@/components/product/BrowseProducts";
 import { useFocusEffect } from "expo-router";
 import { useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { useSharedValue } from "react-native-reanimated";
 
 export default function SearchScreen() {
   const inputRef = useRef<TextInput>(null);
+  const scrollY = useSharedValue(0);
 
   useFocusEffect(() => {
     const timeout = setTimeout(() => {
@@ -18,13 +22,18 @@ export default function SearchScreen() {
     }, 250); // Android sometimes needs a delay
     return () => clearTimeout(timeout);
   });
-
   return (
-    <View>
-      <AppContainer header={<SearchHeader ref={inputRef} />}>
-        {/* Add more content to test scrolling */}
-      </AppContainer>
-    </View>
+    <AppContainer
+      contentStyle={{
+        paddingHorizontal: 0,
+        gap: 24,
+      }}
+      scrollY={scrollY}
+      header={<SearchHeader scrollY={scrollY} stack={false} />}
+    >
+      <BrowseMarkets />
+      <BrowseProducts />
+    </AppContainer>
   );
 }
 
