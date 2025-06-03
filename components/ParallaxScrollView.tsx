@@ -1,97 +1,205 @@
-import type { PropsWithChildren, ReactElement } from "react";
-import { StyleSheet } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
-} from "react-native-reanimated";
+import React, { useRef } from "react";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  FlatListProps,
+  Platform,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 
-import { AppView } from "@/components/global/AppView";
-import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
-import { useColorScheme } from "@/hooks/useColorScheme";
+interface ParallaxScrollViewProps {
+  headerHeight?: number;
+  sticyHeaderHeight?: number;
+  header: React.ReactNode;
+  stickyHeader?: React.ReactNode;
+  // Optional FlatList support
+  data?: any[];
+  renderItem?: FlatListProps<any>["renderItem"];
+  keyExtractor?: FlatListProps<any>["keyExtractor"];
+  // Children used when not using FlatList
+  children?: React.ReactNode;
+  // Style overrides
+  containerStyle?: ViewStyle;
+  headerContainerStyle?: ViewStyle;
+  headerInnerStyle?: ViewStyle;
+  stickyHeaderContainerStyle?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
+  scrollViewStyle?: ViewStyle;
+  flatListStyle?: ViewStyle;
+}
 
-const HEADER_HEIGHT = 220;
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-type Props = PropsWithChildren<{
-  headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
-}>;
+function ParallaxScrollView(props: ParallaxScrollViewProps) {
+  const {
+    headerHeight = 250,
+    sticyHeaderHeight = 50,
+    header,
+    stickyHeader,
+    data,
+    renderItem,
+    keyExtractor,
+    children,
+    containerStyle,
+    headerContainerStyle,
+    headerInnerStyle,
+    stickyHeaderContainerStyle,
+    contentContainerStyle,
+    scrollViewStyle,
+    flatListStyle,
+  } = props;
 
-export default function ParallaxScrollView({
-  children,
-  headerImage,
-  headerBackgroundColor,
-}: Props) {
-  const { theme } = useColorScheme() ?? "light";
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        scrollOffset.value,
-        [-50, 0, HEADER_HEIGHT / 2],
-        [1, 1, 0.5]
-        // Optional: clamp the values to prevent overflow
-      ),
-      transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
-          ),
-        },
-        {
-          scale: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [2, 1, 1]
-          ),
-        },
-      ],
-    };
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  // Translate header container up as user scrolls down
+  const headerTranslate = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, -headerHeight],
+    extrapolate: "clamp",
   });
 
+  // Parallax translate and scale for header content
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [-headerHeight, 0, headerHeight],
+    outputRange: [-headerHeight / 2, 0, headerHeight * 0.75],
+    extrapolate: "clamp",
+  });
+
+  const headerScale = scrollY.interpolate({
+    inputRange: [-headerHeight, 0, headerHeight],
+    outputRange: [2, 1, 1],
+    extrapolate: "clamp",
+  });
+
+  // Fade out main header as user scrolls past half the height
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, headerHeight / 2, headerHeight],
+    outputRange: [1, 1, 0],
+    extrapolate: "clamp",
+  });
+
+  // Fade in sticky header so it's fully opaque when scrolled past main header
+  const stickyOpacity = scrollY.interpolate({
+    inputRange: [sticyHeaderHeight, headerHeight - sticyHeaderHeight],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+
+  const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
   return (
-    <AppView style={styles.container}>
-      <Animated.ScrollView
-        ref={scrollRef}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}
+    <View style={[styles.container, containerStyle]}>
+      {/* Main Parallax Header Container */}
+      <Animated.View
+        pointerEvents={"none"}
+        style={[
+          styles.headerContainer,
+          headerContainerStyle,
+          {
+            height: headerHeight,
+            transform: [{ translateY: headerTranslate }],
+            opacity: headerOpacity,
+          },
+        ]}
       >
         <Animated.View
+          pointerEvents={"none"}
           style={[
-            styles.header,
             {
-              backgroundColor: headerBackgroundColor[theme],
+              width: SCREEN_WIDTH,
+              height: headerHeight,
+              transform: [
+                { translateY: headerTranslateY },
+                { scale: headerScale },
+              ],
             },
-            headerAnimatedStyle,
+            headerInnerStyle,
           ]}
         >
-          {headerImage}
+          {header}
         </Animated.View>
-        <AppView style={styles.content}>{children}</AppView>
-      </Animated.ScrollView>
-    </AppView>
+      </Animated.View>
+
+      {/* Sticky Header appears once main header scrolls away */}
+      {stickyHeader && (
+        <Animated.View
+          style={[
+            styles.stickyHeader,
+            stickyHeaderContainerStyle,
+            { opacity: stickyOpacity },
+          ]}
+        >
+          {stickyHeader}
+        </Animated.View>
+      )}
+
+      {data && renderItem ? (
+        <AnimatedFlatList
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor as any}
+          contentContainerStyle={[
+            { paddingTop: headerHeight },
+            contentContainerStyle,
+          ]}
+          style={flatListStyle}
+          scrollEventThrottle={16}
+          bounces={true}
+          overScrollMode={Platform.OS === "android" ? "always" : undefined}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+        />
+      ) : (
+        <Animated.ScrollView
+          contentContainerStyle={[
+            { paddingTop: headerHeight },
+            contentContainerStyle,
+          ]}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={scrollViewStyle}
+          scrollEventThrottle={16}
+          bounces={true}
+          overScrollMode={Platform.OS === "android" ? "always" : undefined}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+        >
+          {children}
+        </Animated.ScrollView>
+      )}
+    </View>
   );
 }
+
+export default ParallaxScrollView;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
-  header: {
-    height: HEADER_HEIGHT,
+  headerContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
     overflow: "hidden",
+    zIndex: 2, // ensure header is above the list
   },
-  content: {
-    flex: 1,
-    padding: 32,
-    gap: 16,
-    overflow: "hidden",
-    elevation: 1,
+  stickyHeader: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 3, // above header
   },
 });

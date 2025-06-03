@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
 const variantStyles = StyleSheet.create({
   primary: {
     backgroundColor: Colors.light.primary["300"],
+    borderColor: Colors.light.primary["400"],
+    borderWidth: 0.5,
   },
   secondary: {
     backgroundColor: Colors.light.primary["950"],

@@ -1,0 +1,215 @@
+import AppCard from "@/components/global/AppCard";
+import AppSheetHeader from "@/components/global/AppSheetHeader";
+import { AppText } from "@/components/global/AppText";
+import { AppView } from "@/components/global/AppView";
+import { AppButton } from "@/components/ui/Button";
+import { Colors } from "@/constants/Styles";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetScrollView,
+  useBottomSheetModal,
+  useBottomSheetSpringConfigs,
+} from "@gorhom/bottom-sheet";
+import React, { forwardRef, useCallback, useEffect } from "react";
+import { BackHandler, StyleSheet, View } from "react-native";
+const addressDummyData: {
+  addressName: string;
+  addressLocation: string;
+  onPress: () => void;
+}[] = [
+  {
+    addressName: "العمل",
+    addressLocation: "YMujammah,jeddah, saudi arabia, 17 267.",
+    onPress: () => console.log("Pressed 1"),
+  },
+  {
+    addressName: "4العمل",
+    addressLocation: "YMujammah,jeddah, saudi arabia, 17 267.",
+    onPress: () => console.log("Pressed 1"),
+  },
+  {
+    addressName: "ا5لعمل",
+    addressLocation: "YMujammah,jeddah, saudi arabia, 17 267.",
+    onPress: () => console.log("Pressed 1"),
+  },
+  {
+    addressName: "العمgaل",
+    addressLocation: "YMujammah,jeddah, saudi arabia, 17 267.",
+    onPress: () => console.log("Pressed 1"),
+  },
+  {
+    addressName: "الaعمل",
+    addressLocation: "YMujammah,jeddah, saudi arabia, 17 267.",
+    onPress: () => console.log("Pressed 1"),
+  },
+];
+const LocationSheet = forwardRef<BottomSheetModal>((props, ref) => {
+  const { theme } = useColorScheme();
+
+  // Define snap points for the bottom sheet
+  const { dismiss } = useBottomSheetModal();
+  useEffect(() => {
+    const handleBackButton = () => {
+      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
+    };
+
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackButton
+    );
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // Backdrop component
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.5}
+        pressBehavior="close"
+      />
+    ),
+    []
+  );
+  const animationConfigs = useBottomSheetSpringConfigs({
+    damping: 20, // higher = less bouncy, more smooth
+    overshootClamping: false, // allows gentle bounce
+    restDisplacementThreshold: 0.5,
+    restSpeedThreshold: 0.5,
+    stiffness: 150, // lower = smoother & slower
+  });
+
+  return (
+    <BottomSheetModal
+      ref={ref}
+      animationConfigs={animationConfigs}
+      enablePanDownToClose={true}
+      backgroundStyle={styles.sheetContainer}
+      handleIndicatorStyle={{ display: "none" }}
+      enableDynamicSizing={true}
+      maxDynamicContentSize={550}
+      backdropComponent={renderBackdrop}
+    >
+      <AppSheetHeader title="اختار موقعك" />
+      <BottomSheetScrollView style={styles.contentContainer}>
+        <AppView style={{ padding: 20, width: "100%", paddingBottom: 25 }}>
+          <View style={{ gap: 24 }}>
+            <AppText type="pageTitle" style={{ textAlign: "right" }}>
+              الموقع المختار
+            </AppText>
+            <AppCard selected={true} variant="primary">
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <AppView
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <AppText
+                    type="defaultBold"
+                    style={{ textAlign: "right", fontFamily: "Cairo-Bold" }}
+                  >
+                    موقعك الحالي
+                  </AppText>
+                  <AppText
+                    type="secondary"
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{ textAlign: "right", maxWidth: 320 }}
+                  >
+                    سيتم استخدام الموقع الجغرافي لتحديد موقعك الحالي
+                  </AppText>
+                </AppView>
+              </View>
+            </AppCard>
+            <AppText type="pageTitle" style={{ textAlign: "right" }}>
+              مواقع اخرى
+            </AppText>
+            {addressDummyData.map((address) => (
+              <AppCard key={address.addressName}>
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <AppView>
+                    <AppText
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      type="defaultBold"
+                      style={{
+                        textAlign: "right",
+                        maxWidth: 200,
+                        fontFamily: "Cairo-Bold",
+                      }}
+                    >
+                      {address.addressName}
+                    </AppText>
+                    <AppText
+                      numberOfLines={2}
+                      ellipsizeMode="tail"
+                      style={{ textAlign: "right", maxWidth: 200 }}
+                    >
+                      {address.addressLocation}
+                    </AppText>
+                  </AppView>
+                </View>
+              </AppCard>
+            ))}
+          </View>
+        </AppView>
+      </BottomSheetScrollView>
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+          borderTopColor: Colors[theme].secondary.default,
+          borderTopWidth: 0.5,
+        }}
+      >
+        <AppButton title="متابعة" variant="secondary" />
+      </View>
+    </BottomSheetModal>
+  );
+});
+
+const styles = StyleSheet.create({
+  sheetContainer: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: "#fff",
+  },
+  contentContainer: {
+    flex: 1,
+  },
+
+  row: {
+    width: "100%",
+    flexDirection: "row",
+    paddingVertical: 12,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginVertical: 4,
+  },
+});
+
+LocationSheet.displayName = "LocationSheet";
+
+export default LocationSheet;

@@ -33,7 +33,7 @@ const AppContainer = ({
         style={styles.pattern}
         cachePolicy={"memory-disk"}
       />
-
+      {/* please fix the sheet by making app scroll view */}
       {header}
       {scroll ? (
         <Animated.ScrollView

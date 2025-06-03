@@ -2211,7 +2211,7 @@ const GlyphMap = {
   right_line: 0xf1b5,
   right_small_fill: 0xf1b6,
   right_small_line: 0xf1b7,
-  road_fill: 0xf1b8,
+  road_fill: 0xf1fc,
   road_line: 0xf1b9,
   road_map_fill: 0xf1ba,
   road_map_line: 0xf1bb,

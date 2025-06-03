@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import React, { useEffect } from "react";
+import { useFocusEffect } from "expo-router";
+import React from "react";
 import { ViewProps, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -20,17 +21,18 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
   const { theme } = useColorScheme(); // should return "light" | "dark"
   const translateY = useSharedValue(150);
 
-  useEffect(() => {
-    let animateRef = setTimeout(() => {
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset the position first
+      translateY.value = 150;
+
+      // Trigger spring immediately (no delay)
       translateY.value = withSpring(70, {
-        damping: 5,
-        stiffness: 75,
+        damping: 10,
+        stiffness: 100,
       });
-    }, 300);
-    return () => {
-      clearTimeout(animateRef);
-    };
-  }, []);
+    }, [])
+  );
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
@@ -53,7 +55,6 @@ const styles = {
     left: 0,
     right: 0,
     paddingVertical: 24,
-
     paddingBottom: 80,
     paddingHorizontal: 24,
     borderTopRightRadius: 18,

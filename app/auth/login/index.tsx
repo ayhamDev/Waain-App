@@ -1,4 +1,3 @@
-import AppBottomView from "@/components/global/AppBottomView";
 import PasswordInput from "@/components/global/AppPasswordInput";
 import { AppText } from "@/components/global/AppText";
 import AuthContainer from "@/components/global/AuthContainer";
@@ -76,20 +75,20 @@ const LoginScreen = () => {
               <Link href={"/(tabs)"}>نسيت كلمة المرور ؟</Link>
             </AppText>
           </View>
+          <View style={{ gap: 16, marginTop: 25 }}>
+            <AppButton
+              title="تسجيل دخول"
+              variant="secondary"
+              onPress={() => router.replace("/(tabs)")}
+            />
+            <AppButton
+              onPress={() => router.push("/auth/register")}
+              title="تسجيل حساب جديد"
+              variant="outline"
+            />
+          </View>
         </View>
       </AuthContainer>
-      <AppBottomView style={{ gap: 16 }}>
-        <AppButton
-          title="تسجيل دخول"
-          variant="secondary"
-          onPress={() => router.replace("/(tabs)")}
-        />
-        <AppButton
-          onPress={() => router.push("/auth/register")}
-          title="تسجيل حساب جديد"
-          variant="outline"
-        />
-      </AppBottomView>
     </>
   );
 };

@@ -38,7 +38,10 @@ export default function AddressScreen() {
                   backgroundColor: "transparent",
                 }}
               >
-                <AppText type="defaultBold" style={{ textAlign: "right" }}>
+                <AppText
+                  type="defaultBold"
+                  style={{ textAlign: "right", fontFamily: "Cairo-Bold" }}
+                >
                   موقعك الحالي
                 </AppText>
                 <AppText
@@ -78,7 +81,12 @@ export default function AddressScreen() {
                   <AppText
                     numberOfLines={1}
                     ellipsizeMode="tail"
-                    style={{ textAlign: "right", maxWidth: 200 }}
+                    type="defaultBold"
+                    style={{
+                      textAlign: "right",
+                      maxWidth: 200,
+                      fontFamily: "Cairo-Bold",
+                    }}
                   >
                     {address.addressName}
                   </AppText>

@@ -137,7 +137,7 @@ const HistoryDetailsScreen = () => {
         showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 15, gap: 10 }}>
             <ProductCardHistory
               productName={item.productName}
               productType={item.productType}
@@ -147,6 +147,7 @@ const HistoryDetailsScreen = () => {
               imageUrl={item.imageUrl}
               onPress={() => console.log(`Clicked: ${item.productName}`)}
             />
+            <AppSeperator />
           </View>
         )}
       />

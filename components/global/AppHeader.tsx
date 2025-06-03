@@ -18,13 +18,14 @@ import { AppText } from "./AppText";
 interface AppHeaderProps {
   stack?: boolean;
   title?: string;
-  scrollY: SharedValue<number>;
+  scrollY?: SharedValue<number>;
 }
 
 const AppHeader = ({ stack = false, title, scrollY }: AppHeaderProps) => {
   const router = useRouter();
   const { theme } = useColorScheme();
   const animatedStyle = useAnimatedStyle(() => {
+    if (scrollY === undefined) return {};
     // 1) background alpha: 0 → 1 as scroll moves from 0 → 30:
     const rawBg = interpolate(scrollY.value, [0, 30], [0, 1]);
     const bgAlpha = Math.max(rawBg, 0);
@@ -41,7 +42,6 @@ const AppHeader = ({ stack = false, title, scrollY }: AppHeaderProps) => {
 
   return (
     <Animated.View
-      pointerEvents="box-none"
       style={[
         styles.container,
         { borderColor: Colors[theme].secondary.default },
@@ -82,9 +82,12 @@ const AppHeader = ({ stack = false, title, scrollY }: AppHeaderProps) => {
           cachePolicy={"memory-disk"}
         />
       ) : (
-        <AppText type="heading" style={{ textAlign: "right" }}>
-          {title}
-        </AppText>
+        <>
+          <AppText type="heading" style={{ textAlign: "right" }}>
+            {title}
+          </AppText>
+          {/* Spacer to balance the row layout */}
+        </>
       )}
     </Animated.View>
   );
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    zIndex: 1000,
+    zIndex: 1,
     // NOTE: We do NOT set borderWidth or borderColor here,
     // because we want Reanimated to drive those properties dynamically.
   },

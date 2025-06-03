@@ -8,12 +8,12 @@ import LanguageSheet from "@/components/sheets/Language";
 import { AppButton } from "@/components/ui/Button";
 import { MingCuteIconsMap } from "@/components/ui/MingCute/MingCuteIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
 import { useMemo, useRef } from "react";
 import { View } from "react-native";
-import { ActionSheetRef } from "react-native-actions-sheet";
 export default function ProfileScreen() {
-  const sheetRef = useRef<ActionSheetRef | null>(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
   const settingsOptions = useMemo(
     () =>
       [
@@ -45,7 +45,7 @@ export default function ProfileScreen() {
           title: "اللغة",
           content: "عربي",
           iconName: "translate_2_fill",
-          onPress: () => sheetRef.current?.show(),
+          onPress: () => sheetRef.current?.present(),
         },
         {
           title: "رفع بلاغ",

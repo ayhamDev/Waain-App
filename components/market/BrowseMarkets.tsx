@@ -55,6 +55,7 @@ export const BrowseMarkets: React.FC = () => {
         data={DUMMY_IMAGES}
         keyExtractor={(item) => item.id}
         renderItem={renderPlaceholder}
+        snapToInterval={undefined}
         itemWidth={ITEM_WIDTH}
         // Optional: add left padding so the first card isn't flush to the edge
         contentContainerStyle={{

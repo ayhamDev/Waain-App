@@ -20,6 +20,7 @@ type AppButtonProps = {
   endComponent?: (color: string) => React.ReactNode;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  compact?: boolean;
 };
 
 export const AppButton: React.FC<AppButtonProps> = ({
@@ -32,11 +33,13 @@ export const AppButton: React.FC<AppButtonProps> = ({
   endComponent,
   style,
   textStyle,
+  compact,
 }) => {
   const isDisabled = disabled || loading;
 
   const buttonStyles = [
     styles.base,
+    { height: compact ? 40 : 48 },
     variantStyles[variant],
     isDisabled && styles.disabled,
     style,
@@ -84,7 +87,6 @@ export const AppButton: React.FC<AppButtonProps> = ({
 
 const styles = StyleSheet.create({
   base: {
-    height: 48,
     borderRadius: 8,
     paddingHorizontal: 16,
     justifyContent: "center",
@@ -114,6 +116,8 @@ const styles = StyleSheet.create({
 const variantStyles = StyleSheet.create({
   primary: {
     backgroundColor: Colors.light.primary["300"], // Use your primary color
+    borderColor: Colors.light.primary["400"],
+    borderWidth: 0.5,
   },
   secondary: {
     backgroundColor: Colors.light.primary["950"],

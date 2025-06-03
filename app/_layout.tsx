@@ -1,10 +1,12 @@
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -33,27 +35,33 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style="auto" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: Colors[theme].background.default,
-            flex: 1,
-          },
-        }}
-      >
-        {/* main */}
-        <Stack.Screen name="(tabs)" />
-        {/* screens stacks */}
-        <Stack.Screen name="profile" />
-        <Stack.Screen name="notification/index" />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: Colors[theme].background.default }}
+        >
+          <StatusBar style="auto" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: Colors[theme].background.default,
+                flex: 1,
+              },
+            }}
+          >
+            {/* main */}
+            <Stack.Screen name="(tabs)" />
+            {/* screens stacks */}
+            <Stack.Screen name="profile" />
+            <Stack.Screen name="notification/index" />
 
-        {/* auth */}
-        <Stack.Screen name="auth" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </SafeAreaView>
+            {/* auth */}
+            <Stack.Screen name="auth" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </SafeAreaView>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

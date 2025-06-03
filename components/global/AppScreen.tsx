@@ -9,6 +9,7 @@ function AppScreen({
   stack = false,
   scroll = true,
   contentStyle,
+  forceStatic = false,
   title,
 }: {
   children: React.JSX.Element | React.JSX.Element[];
@@ -16,8 +17,9 @@ function AppScreen({
   scroll?: boolean;
   title?: string;
   contentStyle?: ViewStyle;
+  forceStatic?: boolean;
 }) {
-  const scrollY = useSharedValue(0);
+  const scrollY = useSharedValue(forceStatic ? 100 : 0);
   return (
     <AppContainer
       scrollY={scrollY}

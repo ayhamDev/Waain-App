@@ -99,6 +99,8 @@ export function AppHorizontalFlatList<T>(props: AppHorizontalFlatListProps<T>) {
         styles.content,
         contentContainerStyle,
       ]}
+      bounces={true}
+      bouncesZoom={true}
       getItemLayout={getItemLayout}
       snapToInterval={snapInterval} // Snap to each item + spacing
       snapToAlignment="start" // Align each snapped item to the left edge
