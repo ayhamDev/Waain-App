@@ -1,3 +1,4 @@
+import AppSheetHeader from "@/components/global/AppSheetHeader";
 import { AppText } from "@/components/global/AppText";
 import { AppView } from "@/components/global/AppView";
 import { Colors } from "@/constants/Styles";
@@ -59,17 +60,13 @@ const LanguageSheet = forwardRef<BottomSheetModal>((props, ref) => {
       ref={ref}
       enablePanDownToClose={true}
       backgroundStyle={styles.sheetContainer}
-      handleIndicatorStyle={styles.indicator}
+      handleIndicatorStyle={{ display: "none" }}
+      enableDynamicSizing={true}
       backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={styles.contentContainer}>
+        <AppSheetHeader back={false} title="اختار اللغة" />
         <AppView style={{ padding: 20, width: "100%" }}>
-          <AppText
-            style={{ marginBottom: 20, textAlign: "right" }}
-            type="pageTitle"
-          >
-            اختر اللغة
-          </AppText>
           {languages.map((lang, index) => (
             <React.Fragment key={lang}>
               <TouchableOpacity

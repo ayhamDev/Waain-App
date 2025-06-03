@@ -12,6 +12,7 @@ type IconButtonProps = {
   rounded?: boolean;
   variant?: "primary" | "secondary" | "outline" | "danger";
   style?: ViewStyle;
+  compact?: boolean;
 };
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -20,12 +21,13 @@ export const IconButton: React.FC<IconButtonProps> = ({
   loading = false,
   disabled = false,
   size = 44,
-  rounded = true,
+  rounded = false,
   variant = "primary",
+  compact = false,
   style,
 }) => {
   const isDisabled = disabled || loading;
-
+  size = compact ? 35 : size;
   const buttonStyles = [
     {
       width: size,

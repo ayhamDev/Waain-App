@@ -11,9 +11,13 @@ import { AppText } from "./AppText"; // Adjust import as needed
 
 interface AppSheetHeaderProps {
   title: string;
+  back?: boolean;
 }
 
-const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({ title }) => {
+const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({
+  title,
+  back = true,
+}) => {
   const { dismiss } = useBottomSheetModal();
   const { theme } = useColorScheme();
   useEffect(() => {
@@ -53,14 +57,18 @@ const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({ title }) => {
         }}
         cachePolicy={"memory-disk"}
       />
+      {back ? (
+        <IconButton
+          rounded={false}
+          icon={(color) => (
+            <MingCuteIcon name="left_line" size={24} color={color} />
+          )}
+          onPress={() => dismiss()}
+        />
+      ) : (
+        <View />
+      )}
 
-      <IconButton
-        rounded={false}
-        icon={(color) => (
-          <MingCuteIcon name="left_line" size={24} color={color} />
-        )}
-        onPress={() => dismiss()}
-      />
       <AppText type="pageTitle">{title}</AppText>
     </View>
   );
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 8,
     alignItems: "center",
     justifyContent: "space-between",
   },

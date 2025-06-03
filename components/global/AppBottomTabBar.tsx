@@ -137,12 +137,14 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
               <MingCuteIcon
                 size={28}
                 name={isFocused ? iconDef.iconFill : iconDef.iconLine}
-                color={Colors[theme].icon}
+                color={Colors[theme].primary["950"]}
               />
             ) : (
               <Text
                 style={{
-                  color: isFocused ? Colors[theme].tint : Colors[theme].icon,
+                  color: isFocused
+                    ? Colors[theme].primary["800"]
+                    : Colors[theme].primary["950"],
                 }}
               >
                 {options.tabBarLabel ?? options.title ?? route.name}

@@ -7,6 +7,7 @@ import { AppText } from "@/components/global/AppText";
 import { AppView } from "@/components/global/AppView";
 import ProductCardCart from "@/components/product/ProductCardCart";
 import CartSheet from "@/components/sheets/cart";
+import MarketSheet from "@/components/sheets/market";
 import { AppButton } from "@/components/ui/Button";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { Colors } from "@/constants/Styles";
@@ -61,6 +62,7 @@ const products = [
 const CartScreen = () => {
   const { theme } = useColorScheme();
   const CartSheetRef = useRef<BottomSheetModal>(null);
+  const MarketSheetRef = useRef<BottomSheetModal>(null);
   return (
     <AppScreen contentStyle={{ flex: 1 }} scroll={false}>
       <View style={{ gap: 20 }}>
@@ -89,6 +91,9 @@ const CartScreen = () => {
                     <AppButton
                       compact
                       title="تحديد"
+                      onPress={() => {
+                        MarketSheetRef.current?.present();
+                      }}
                       variant="secondary"
                       startComponent={(color) => (
                         <MingCuteIcon
@@ -201,6 +206,7 @@ const CartScreen = () => {
         />
       </AppBottomView>
       <CartSheet ref={CartSheetRef} />
+      <MarketSheet ref={MarketSheetRef} />
     </AppScreen>
   );
 };
