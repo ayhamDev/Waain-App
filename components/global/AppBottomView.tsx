@@ -27,7 +27,7 @@ const AppBottomView: React.FC<AppBottomViewProps> = ({
       translateY.value = 150;
 
       // Trigger spring immediately (no delay)
-      translateY.value = withSpring(70, {
+      translateY.value = withSpring(65, {
         damping: 10,
         stiffness: 100,
       });

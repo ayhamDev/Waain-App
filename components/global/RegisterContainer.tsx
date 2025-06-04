@@ -22,6 +22,7 @@ const AuthContainer = ({
         {
           borderTopColor: Colors[theme].secondary.default,
           borderTopWidth: 0.5,
+          elevation: 1,
         },
       ]}
     >

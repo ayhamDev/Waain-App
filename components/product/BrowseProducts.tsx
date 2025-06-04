@@ -2,6 +2,7 @@
 
 import { AppHorizontalFlatList } from "@/components/global/AppHorizontalFlatList";
 import { AppText } from "@/components/global/AppText";
+import { useProductSheet } from "@/context/ProductSheet.context";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { ProductCard } from "./ProductCard";
@@ -52,6 +53,8 @@ const DUMMY_PRODUCTS = [
 ];
 
 const BrowseProducts: React.FC = () => {
+  const ProductSheet = useProductSheet();
+
   return (
     <View style={styles.container}>
       {/* Heading */}
@@ -73,6 +76,7 @@ const BrowseProducts: React.FC = () => {
             badgeText={item.badgeText}
             style={{ marginRight: ITEM_SPACING }}
             onPress={() => {
+              ProductSheet.present();
               // Handle tap (e.g., navigate to a detail screen for `item.id`)
               console.log("Tapped product:", item.id);
             }}

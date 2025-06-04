@@ -3,8 +3,8 @@ import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image } from "expo-image";
-import React, { useEffect } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { IconButton } from "../ui/IconButton";
 import MingCuteIcon from "../ui/MingCute/MingCuteIcon";
 import { AppText } from "./AppText"; // Adjust import as needed
@@ -20,19 +20,6 @@ const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({
 }) => {
   const { dismiss } = useBottomSheetModal();
   const { theme } = useColorScheme();
-  useEffect(() => {
-    const handleBackButton = () => {
-      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
-    };
-
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   return (
     <View

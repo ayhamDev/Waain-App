@@ -33,6 +33,7 @@ const AppBadge: React.FC<AppBadgeProps> = ({
           borderWidth: 1,
           borderRadius: 5,
           padding: 5,
+          paddingHorizontal: 8,
           alignSelf: "flex-start",
           ...(style || {}),
         },

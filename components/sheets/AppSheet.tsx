@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   sheetContainer: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    backgroundColor: "red",
   },
   indicator: {
     width: 100,

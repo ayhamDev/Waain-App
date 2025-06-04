@@ -1458,7 +1458,7 @@ const GlyphMap = {
   heart_fill: 0xeeae,
   heart_half_fill: 0xeeaf,
   heart_half_line: 0xeeb0,
-  heart_line: 0xeeb1,
+  heart_line: 0xeeb3,
   heavy_rain_fill: 0xeeb2,
   heavy_rain_line: 0xeeb3,
   heavy_snow_fill: 0xeeb4,
