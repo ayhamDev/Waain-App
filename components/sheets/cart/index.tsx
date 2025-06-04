@@ -7,67 +7,18 @@ import { AppView } from "@/components/global/AppView";
 import { AppButton } from "@/components/ui/Button";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetModal,
-  useBottomSheetSpringConfigs,
-} from "@gorhom/bottom-sheet";
-import React, { forwardRef, useCallback, useEffect, useRef } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import React, { forwardRef, useRef } from "react";
+import { StyleSheet, View } from "react-native";
+import AppSheet from "../AppSheet";
 import LocationSheet from "../location";
 
 const CartSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { theme } = useColorScheme();
   const LocationSheetRef = useRef<BottomSheetModal>(null);
-  // Define snap points for the bottom sheet
-  const { dismiss } = useBottomSheetModal();
-  useEffect(() => {
-    const handleBackButton = () => {
-      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
-    };
-
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  // Backdrop component
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
-  const animationConfigs = useBottomSheetSpringConfigs({
-    damping: 20, // higher = less bouncy, more smooth
-    overshootClamping: false, // allows gentle bounce
-    restDisplacementThreshold: 0.5,
-    restSpeedThreshold: 0.5,
-    stiffness: 150, // lower = smoother & slower
-  });
 
   return (
-    <BottomSheetModal
-      ref={ref}
-      animationConfigs={animationConfigs}
-      enablePanDownToClose={true}
-      backgroundStyle={styles.sheetContainer}
-      handleIndicatorStyle={{ display: "none" }}
-      backdropComponent={renderBackdrop}
-    >
+    <AppSheet ref={ref}>
       <BottomSheetView style={styles.contentContainer}>
         <AppSheetHeader title="اختر طريقة التسوق" />
         <AppView style={{ padding: 20, width: "100%" }}>
@@ -180,7 +131,7 @@ const CartSheet = forwardRef<BottomSheetModal>((props, ref) => {
         </AppView>
         <LocationSheet ref={LocationSheetRef} />
       </BottomSheetView>
-    </BottomSheetModal>
+    </AppSheet>
   );
 });
 

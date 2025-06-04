@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, {
+  Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
@@ -31,9 +32,13 @@ const AppHeader = ({ stack = false, title, scrollY }: AppHeaderProps) => {
     const bgAlpha = Math.max(rawBg, 0);
 
     // 2) borderWidth: 0 → 1 as scroll goes from 0 → 30:
-    const rawBW = interpolate(scrollY.value, [0, 30], [0, 1]);
-    const borderWidth = interpolate(scrollY.value, [0, 30], [0, 0.5]);
-
+    // const rawBW = interpolate(scrollY.value, [0, 30], [0, 1]);
+    const borderWidth = interpolate(
+      scrollY.value,
+      [5, 30],
+      [0, 0.5],
+      Extrapolation.CLAMP
+    );
     return {
       backgroundColor: `rgba(255, 255, 255, ${bgAlpha})`,
       borderBottomWidth: borderWidth, // ← animated from 0 → 1
@@ -107,8 +112,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     zIndex: 1,
-    // NOTE: We do NOT set borderWidth or borderColor here,
-    // because we want Reanimated to drive those properties dynamically.
   },
 });
 

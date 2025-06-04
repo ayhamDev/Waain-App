@@ -39,7 +39,7 @@ const AppContainer = ({
         <Animated.ScrollView
           contentContainerStyle={[styles.content, contentStyle]}
           onScroll={scrollHandler}
-          scrollEventThrottle={20}
+          scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >

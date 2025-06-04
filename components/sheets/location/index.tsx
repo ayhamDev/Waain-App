@@ -5,16 +5,10 @@ import { AppView } from "@/components/global/AppView";
 import { AppButton } from "@/components/ui/Button";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetModal,
-  useBottomSheetSpringConfigs,
-} from "@gorhom/bottom-sheet";
-import React, { forwardRef, useCallback, useEffect } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
+import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import React, { forwardRef } from "react";
+import { StyleSheet, View } from "react-native";
+import AppSheet from "../AppSheet";
 const addressDummyData: {
   addressName: string;
   addressLocation: string;
@@ -49,56 +43,14 @@ const addressDummyData: {
 const LocationSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { theme } = useColorScheme();
 
-  // Define snap points for the bottom sheet
-  const { dismiss } = useBottomSheetModal();
-  useEffect(() => {
-    const handleBackButton = () => {
-      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
-    };
-
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  // Backdrop component
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
-  const animationConfigs = useBottomSheetSpringConfigs({
-    damping: 20, // higher = less bouncy, more smooth
-    overshootClamping: false, // allows gentle bounce
-    restDisplacementThreshold: 0.5,
-    restSpeedThreshold: 0.5,
-    stiffness: 150, // lower = smoother & slower
-  });
-
   return (
-    <BottomSheetModal
-      ref={ref}
-      animationConfigs={animationConfigs}
-      enablePanDownToClose={true}
-      backgroundStyle={styles.sheetContainer}
-      handleIndicatorStyle={{ display: "none" }}
-      enableDynamicSizing={true}
-      maxDynamicContentSize={550}
-      backdropComponent={renderBackdrop}
-    >
+    <AppSheet ref={ref} enableDynamicSizing={true} maxDynamicContentSize={550}>
       <AppSheetHeader title="اختار موقعك" />
-      <BottomSheetScrollView style={styles.contentContainer}>
+      <BottomSheetScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        style={styles.contentContainer}
+      >
         <AppView style={{ padding: 20, width: "100%", paddingBottom: 25 }}>
           <View style={{ gap: 24 }}>
             <AppText type="pageTitle" style={{ textAlign: "right" }}>
@@ -184,7 +136,7 @@ const LocationSheet = forwardRef<BottomSheetModal>((props, ref) => {
       >
         <AppButton title="متابعة" variant="secondary" />
       </View>
-    </BottomSheetModal>
+    </AppSheet>
   );
 });
 

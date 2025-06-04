@@ -3,16 +3,11 @@ import { AppText } from "@/components/global/AppText";
 import { AppView } from "@/components/global/AppView";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-  useBottomSheetModal,
-} from "@gorhom/bottom-sheet";
-import React, { forwardRef, useCallback, useEffect, useState } from "react";
-import { BackHandler, StyleSheet, TouchableOpacity, View } from "react-native";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import React, { forwardRef, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import AppSheet from "../AppSheet";
 
 const languages = ["العربية", "English"] as const;
 
@@ -20,50 +15,12 @@ const LanguageSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { theme } = useColorScheme();
   const [selected, setSelected] = useState<string>("العربية");
 
-  // Define snap points for the bottom sheet
-
-  // Backdrop component
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
-
   const toggleLanguage = (lang: string) => {
     setSelected(lang);
   };
-  const { dismiss } = useBottomSheetModal();
-
-  useEffect(() => {
-    const handleBackButton = () => {
-      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
-    };
-
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   return (
-    <BottomSheetModal
-      ref={ref}
-      enablePanDownToClose={true}
-      backgroundStyle={styles.sheetContainer}
-      handleIndicatorStyle={{ display: "none" }}
-      enableDynamicSizing={true}
-      backdropComponent={renderBackdrop}
-    >
+    <AppSheet ref={ref} snapPoints={undefined} enableDynamicSizing={true}>
       <BottomSheetView style={styles.contentContainer}>
         <AppSheetHeader back={false} title="اختار اللغة" />
         <AppView style={{ padding: 20, width: "100%" }}>
@@ -101,7 +58,7 @@ const LanguageSheet = forwardRef<BottomSheetModal>((props, ref) => {
           ))}
         </AppView>
       </BottomSheetView>
-    </BottomSheetModal>
+    </AppSheet>
   );
 });
 

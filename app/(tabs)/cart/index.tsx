@@ -1,7 +1,8 @@
 import AppBadge from "@/components/global/AppBadge";
 import AppBottomView from "@/components/global/AppBottomView";
 import AppCard from "@/components/global/AppCard";
-import AppScreen from "@/components/global/AppScreen";
+import AppContainer from "@/components/global/AppContainer";
+import AppHeader from "@/components/global/AppHeader";
 import { AppSeperator } from "@/components/global/AppSeperator";
 import { AppText } from "@/components/global/AppText";
 import { AppView } from "@/components/global/AppView";
@@ -15,7 +16,11 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image } from "expo-image";
 import React, { useRef } from "react";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from "react-native-reanimated";
 const products = [
   {
     productName: "تفاح أحمر",
@@ -63,13 +68,28 @@ const CartScreen = () => {
   const { theme } = useColorScheme();
   const CartSheetRef = useRef<BottomSheetModal>(null);
   const MarketSheetRef = useRef<BottomSheetModal>(null);
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
   return (
-    <AppScreen contentStyle={{ flex: 1 }} scroll={false}>
+    <AppContainer
+      scrollY={scrollY}
+      scroll={false}
+      contentStyle={{ paddingTop: 0 }}
+      header={<AppHeader scrollY={scrollY} stack={false} />}
+    >
+      {/* // <AppScreen contentStyle={{ flex: 1 }} scroll={false}> */}
       <View style={{ gap: 20 }}>
         <View style={{ gap: 5 }}>
-          <FlatList
+          <Animated.FlatList
+            onScroll={scrollHandler}
+            scrollEventThrottle={16}
             bounces={true}
-            contentContainerStyle={{ paddingBottom: 120 }}
+            style={{ paddingTop: 80 }}
+            contentContainerStyle={{ paddingBottom: 200 }}
             data={products}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
@@ -207,7 +227,9 @@ const CartScreen = () => {
       </AppBottomView>
       <CartSheet ref={CartSheetRef} />
       <MarketSheet ref={MarketSheetRef} />
-    </AppScreen>
+    </AppContainer>
+
+    // {/* </AppScreen> */}
   );
 };
 

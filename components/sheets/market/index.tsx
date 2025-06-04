@@ -4,34 +4,15 @@ import FavMarket from "@/components/market/FavMarket";
 import { AppButton } from "@/components/ui/Button";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetModal,
-  useBottomSheetSpringConfigs,
-} from "@gorhom/bottom-sheet";
-import React, { forwardRef, useCallback, useEffect, useMemo } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
+import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import React, { forwardRef, useMemo } from "react";
+import { StyleSheet, View } from "react-native";
+import AppSheet from "../AppSheet";
 
 const MarketSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { theme } = useColorScheme();
   // Define snap points for the bottom sheet
-  const { dismiss } = useBottomSheetModal();
-  useEffect(() => {
-    const handleBackButton = () => {
-      return dismiss(); // dismiss() returns true/false, it means there is any instance of Bottom Sheet visible on current screen.
-    };
 
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
   const dummyStats = [
     {
       id: "1",
@@ -65,40 +46,15 @@ const MarketSheet = forwardRef<BottomSheetModal>((props, ref) => {
     },
   ];
   // Backdrop component
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
-  const animationConfigs = useBottomSheetSpringConfigs({
-    damping: 20, // higher = less bouncy, more smooth
-    overshootClamping: false, // allows gentle bounce
-    restDisplacementThreshold: 0.5,
-    restSpeedThreshold: 0.5,
-    stiffness: 150, // lower = smoother & slower
-  });
-  const snapPoints = useMemo(() => ["25%", "90%"], []);
+
+  const snapPoints = useMemo(() => ["90%"], []);
 
   return (
-    <BottomSheetModal
-      ref={ref}
-      animationConfigs={animationConfigs}
-      enablePanDownToClose={true}
-      backgroundStyle={styles.sheetContainer}
-      handleIndicatorStyle={styles.indicator}
-      enableDynamicSizing={false}
-      snapPoints={snapPoints}
-      backdropComponent={renderBackdrop}
-    >
+    <AppSheet ref={ref} enableDynamicSizing={false} snapPoints={snapPoints}>
       <AppSheetHeader title="اختار السوبرماركت" />
       <BottomSheetScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         style={styles.contentContainer}
         contentContainerStyle={{ minHeight: 200 }}
       >
@@ -122,7 +78,7 @@ const MarketSheet = forwardRef<BottomSheetModal>((props, ref) => {
       >
         <AppButton title="متابعة" variant="secondary" />
       </View>
-    </BottomSheetModal>
+    </AppSheet>
   );
 });
 
