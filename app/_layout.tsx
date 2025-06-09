@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Styles";
-import { ProductSheetProvider } from "@/context/ProductSheet.context";
+import { AppSheetProvider } from "@/context/AppSheet.context";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFonts } from "expo-font";
@@ -41,7 +41,7 @@ export default function RootLayout() {
         <SafeAreaView
           style={{ flex: 1, backgroundColor: Colors[theme].background.default }}
         >
-          <ProductSheetProvider>
+          <AppSheetProvider>
             <StatusBar style="auto" />
             <Stack
               screenOptions={{
@@ -62,7 +62,7 @@ export default function RootLayout() {
               <Stack.Screen name="auth" />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </ProductSheetProvider>
+          </AppSheetProvider>
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

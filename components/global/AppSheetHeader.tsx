@@ -27,7 +27,8 @@ const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({
         styles.container,
         {
           borderBottomColor: Colors[theme].secondary.default,
-          borderBottomWidth: 1,
+          borderBottomWidth: 0.75,
+          overflow: "hidden",
         },
       ]}
     >
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     alignItems: "center",
     justifyContent: "space-between",
+    width: "100%",
   },
 });
 

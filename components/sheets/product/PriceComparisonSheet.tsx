@@ -1,9 +1,11 @@
 import AppBadge from "@/components/global/AppBadge";
 import AppBottomView from "@/components/global/AppBottomView";
+import AppCard from "@/components/global/AppCard";
+import AppSheetHeader from "@/components/global/AppSheetHeader";
 import { AppText } from "@/components/global/AppText";
 import SheetParallaxScrollView from "@/components/SheetParallaxScrollView";
 import { AppButton } from "@/components/ui/Button";
-import { IconButton } from "@/components/ui/IconButton";
+import TextInputField from "@/components/ui/Input";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -48,7 +50,7 @@ const PriceComparisonSheet = forwardRef<
     {
       id: 1,
       marketName: "كارفور",
-      marketImage: "https://placehold.co/120x50?text=carrefour",
+      marketImage: "https://placehold.co/120x100?text=carrefour",
       price: 12.5,
       originalPrice: 15.0,
       discount: "17%",
@@ -59,7 +61,7 @@ const PriceComparisonSheet = forwardRef<
     {
       id: 2,
       marketName: "لولو هايبر ماركت",
-      marketImage: "https://placehold.co/120x50?text=lulu",
+      marketImage: "https://placehold.co/120x100?text=lulu",
       price: 14.0,
       originalPrice: 14.0,
       discount: null,
@@ -70,7 +72,7 @@ const PriceComparisonSheet = forwardRef<
     {
       id: 3,
       marketName: "بنده",
-      marketImage: "https://placehold.co/120x50?text=panda",
+      marketImage: "https://placehold.co/120x100?text=panda",
       price: 13.25,
       originalPrice: 16.0,
       discount: "17%",
@@ -81,7 +83,7 @@ const PriceComparisonSheet = forwardRef<
     {
       id: 4,
       marketName: "العثيم",
-      marketImage: "https://placehold.co/120x50?text=othaim",
+      marketImage: "https://placehold.co/120x100?text=othaim",
       price: 11.75,
       originalPrice: 13.5,
       discount: "13%",
@@ -96,18 +98,15 @@ const PriceComparisonSheet = forwardRef<
   );
 
   const renderPriceItem = ({ item }: { item: PriceComparisonItem }) => (
-    <View
+    <AppCard
+      selected={selectedMarket.id === item.id}
       style={{
         backgroundColor: Colors[theme].background.default,
         borderRadius: 12,
         padding: 16,
         marginBottom: 12,
         marginHorizontal: 20,
-        borderWidth: selectedMarket.id === item.id ? 2 : 1,
-        borderColor:
-          selectedMarket.id === item.id
-            ? Colors[theme].primary.default
-            : Colors[theme].secondary.default,
+        overflow: "hidden",
       }}
     >
       <View
@@ -116,32 +115,13 @@ const PriceComparisonSheet = forwardRef<
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: 12,
+          overflow: "hidden",
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <Image
-            source={{ uri: item.marketImage }}
-            style={{
-              width: 50,
-              height: 30,
-              borderRadius: 6,
-            }}
-          />
-          <View>
-            <AppText type="defaultBold" style={{ textAlign: "right" }}>
-              {item.marketName}
-            </AppText>
-            <AppText
-              type="secondary"
-              style={{ textAlign: "right", fontSize: 12 }}
-            >
-              {item.deliveryTime}
-            </AppText>
-          </View>
-        </View>
-
-        <View style={{ alignItems: "flex-end" }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <View style={{ alignItems: "flex-end", overflow: "hidden" }}>
+          <View
+            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
+          >
             <AppText
               type="pageTitle"
               style={{ color: Colors[theme].primary.default }}
@@ -166,6 +146,48 @@ const PriceComparisonSheet = forwardRef<
             </AppBadge>
           )}
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            overflow: "hidden",
+          }}
+        >
+          <View
+            style={{
+              overflow: "hidden",
+            }}
+          >
+            <AppText
+              type="defaultBold"
+              style={{ textAlign: "right", maxWidth: 100 }}
+              numberOfLines={3}
+              ellipsizeMode="tail"
+            >
+              {item.marketName}
+            </AppText>
+            <AppText
+              type="secondary"
+              style={{ textAlign: "right", fontSize: 12 }}
+            >
+              {item.deliveryTime}
+            </AppText>
+          </View>
+          <Image
+            source={{ uri: item.marketImage }}
+            onError={(e) => {
+              console.log(e.error);
+            }}
+            contentFit="cover"
+            contentPosition={"center"}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 12,
+            }}
+          />
+        </View>
       </View>
 
       <View
@@ -175,17 +197,6 @@ const PriceComparisonSheet = forwardRef<
           alignItems: "center",
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-          <MingCuteIcon
-            name="star_fill"
-            size={16}
-            color={Colors[theme].primary.default}
-          />
-          <AppText type="secondary" style={{ fontSize: 12 }}>
-            {item.rating}
-          </AppText>
-        </View>
-
         <AppButton
           title={item.isAvailable ? "اختر هذا المتجر" : "غير متوفر"}
           variant={item.isAvailable ? "primary" : "secondary"}
@@ -194,14 +205,15 @@ const PriceComparisonSheet = forwardRef<
           style={{ paddingHorizontal: 16 }}
         />
       </View>
-    </View>
+    </AppCard>
   );
 
   // Header component for parallax
   const ParallaxHeader = () => (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {/* Product Info Header */}
-      <View
+
+      <AppCard
         style={{
           backgroundColor: Colors[theme].background.default,
           borderRadius: 12,
@@ -214,13 +226,19 @@ const PriceComparisonSheet = forwardRef<
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
-          elevation: 3,
+          elevation: 11,
         }}
       >
-        <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "flex-end",
+          }}
+        >
           <AppText
             type="pageTitle"
             style={{ textAlign: "right", marginBottom: 8 }}
+            numberOfLines={3}
           >
             {productData?.name || "حليب مراعي"}
           </AppText>
@@ -230,6 +248,12 @@ const PriceComparisonSheet = forwardRef<
           >
             {productData?.size || "1.5 لتر"}
           </AppText>
+          <AppBadge
+            variant="primary"
+            style={{ marginLeft: "auto", marginTop: 10 }}
+          >
+            <AppText>منتجات البان</AppText>
+          </AppBadge>
         </View>
         <Image
           source={{
@@ -237,12 +261,12 @@ const PriceComparisonSheet = forwardRef<
               productData?.image || "https://placehold.co/80x80?text=product",
           }}
           style={{
-            width: 80,
-            height: 80,
+            width: 150,
+            height: 150,
             borderRadius: 12,
           }}
         />
-      </View>
+      </AppCard>
     </View>
   );
 
@@ -255,8 +279,16 @@ const PriceComparisonSheet = forwardRef<
         paddingVertical: 16,
         borderBottomColor: Colors[theme].secondary.default,
         borderBottomWidth: 0.5,
+        gap: 10,
       }}
     >
+      <TextInputField
+        startComponent={({ color }) => (
+          <MingCuteIcon size={22} name="search_line" color={color} />
+        )}
+        placeholder="Search..."
+        style={{ flex: 1 }}
+      />
       <View
         style={{
           flexDirection: "row",
@@ -264,9 +296,6 @@ const PriceComparisonSheet = forwardRef<
           alignItems: "center",
         }}
       >
-        <AppText type="defaultBold" style={{ textAlign: "right" }}>
-          ترتيب حسب:
-        </AppText>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <AppBadge variant="primary">
             <AppText style={{ fontSize: 12 }}>السعر</AppText>
@@ -278,6 +307,9 @@ const PriceComparisonSheet = forwardRef<
             <AppText style={{ fontSize: 12 }}>التوصيل</AppText>
           </AppBadge>
         </View>
+        <AppText type="defaultBold" style={{ textAlign: "right" }}>
+          ترتيب حسب:
+        </AppText>
       </View>
     </View>
   );
@@ -286,6 +318,18 @@ const PriceComparisonSheet = forwardRef<
     <AppSheet ref={ref} enableDynamicSizing={false} snapPoints={snapPoints}>
       {/* Fixed Header */}
       <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: Colors[theme].background.default,
+          zIndex: 10,
+          width: "100%",
+        }}
+      >
+        <AppSheetHeader title="مقارنة الاسعار" />
+      </View>
+      {/* <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -311,7 +355,7 @@ const PriceComparisonSheet = forwardRef<
         </AppText>
 
         <View style={{ width: 40 }} />
-      </View>
+      </View> */}
 
       {/* Parallax ScrollView with FlatList */}
       <SheetParallaxScrollView
@@ -333,16 +377,10 @@ const PriceComparisonSheet = forwardRef<
       {/* Bottom Action Bar */}
       <AppBottomView
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 25,
-          borderTopColor: Colors[theme].secondary.default,
-          borderTopWidth: 0.5,
           gap: 12,
-          position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 10,
         }}
       >
         <View
@@ -387,7 +425,5 @@ const PriceComparisonSheet = forwardRef<
     </AppSheet>
   );
 });
-
-PriceComparisonSheet.displayName = "PriceComparisonSheet";
 
 export default PriceComparisonSheet;

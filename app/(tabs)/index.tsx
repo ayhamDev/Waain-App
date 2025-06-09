@@ -65,6 +65,7 @@ export default function ProfileScreen() {
     >
       <View style={{ gap: 24 }}>
         <AppCarousel />
+        {/* <BrowseCategories /> */}
         <BrowseMarkets />
         <BrowseProducts />
       </View>

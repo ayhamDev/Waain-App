@@ -70,6 +70,7 @@ const styles = {
     elevation: 24,
     borderColor: colors.secondary.default,
     borderWidth: 1,
+    zIndex: 9999999,
   }),
 };
 

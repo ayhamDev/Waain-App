@@ -3008,7 +3008,10 @@ const GlyphMap = {
   zoom_out_fill: 0xf51e,
   zoom_out_line: 0xf51f,
 };
-export { GlyphMap as MingCuteIconsMap };
+type MingCuteIconName = keyof typeof GlyphMap;
+
+export { MingCuteIconName, GlyphMap as MingCuteIconsMap };
+
 export default createIconSet(
   GlyphMap,
   "MingCute",

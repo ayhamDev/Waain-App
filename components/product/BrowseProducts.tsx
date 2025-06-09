@@ -2,7 +2,7 @@
 
 import { AppHorizontalFlatList } from "@/components/global/AppHorizontalFlatList";
 import { AppText } from "@/components/global/AppText";
-import { useProductSheet } from "@/context/ProductSheet.context";
+import { useAppSheet } from "@/context/AppSheet.context";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { ProductCard } from "./ProductCard";
@@ -53,7 +53,7 @@ const DUMMY_PRODUCTS = [
 ];
 
 const BrowseProducts: React.FC = () => {
-  const ProductSheet = useProductSheet();
+  const { ProductSheet } = useAppSheet();
 
   return (
     <View style={styles.container}>

@@ -1,13 +1,8 @@
-import AppBadge from "@/components/global/AppBadge";
-import AppCard from "@/components/global/AppCard";
 import AppScreen from "@/components/global/AppScreen";
-import { AppText } from "@/components/global/AppText";
+import { ProductCard } from "@/components/product/ProductCard";
 import TextInputField from "@/components/ui/Input";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
-import { Colors } from "@/constants/Styles";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import RNBounceable from "@freakycoder/react-native-bounceable";
-import { Image } from "expo-image";
 import React from "react";
 import { View } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
@@ -41,53 +36,26 @@ export default function FavouriteScreen() {
           }}
         >
           <FlatGrid
-            itemDimension={130}
+            itemDimension={150}
             spacing={15}
             contentContainerStyle={{
               paddingBottom: 100,
+              justifyContent: "space-between",
+            }}
+            itemContainerStyle={{
+              justifyContent: "flex-start",
+              alignItems: "center",
             }}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             data={Array.from({ length: 10 }, (value, index) => index)}
             renderItem={({ item }) => (
-              <RNBounceable>
-                <AppCard
-                  style={{
-                    borderRadius: 12,
-                    padding: 10,
-                  }}
-                >
-                  <Image
-                    style={{
-                      minHeight: 120,
-                      maxHeight: 200,
-                      width: "100%",
-                      borderRadius: 12,
-                      marginBottom: 10,
-                      backgroundColor: Colors[theme].secondary.default,
-                    }}
-                    contentFit="cover"
-                    contentPosition={"center"}
-                    source={{
-                      uri: "https://placehold.co/500x500/webp",
-                    }}
-                  />
-                  <View>
-                    <AppText style={{ textAlign: "right" }} type="default">
-                      تفاح طازج
-                    </AppText>
-                    <AppText style={{ textAlign: "right" }} type="secondary">
-                      1 كيلو
-                    </AppText>
-                    <AppBadge
-                      variant="primary"
-                      style={{ marginLeft: "auto", marginTop: 10 }}
-                    >
-                      <AppText type="default">فواكة طازجة</AppText>
-                    </AppBadge>
-                  </View>
-                </AppCard>
-              </RNBounceable>
+              <ProductCard
+                imageUri="https://placehold.co/120x120?text=product"
+                title="product"
+                badgeText="dairy"
+                subtitle="milk"
+              />
             )}
           />
         </View>
