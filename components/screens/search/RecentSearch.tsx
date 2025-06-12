@@ -1,15 +1,16 @@
+import { AppText } from "@/components/global/AppText";
 import MingCuteIcon from "@/components/ui/MingCute/MingCuteIcon";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
+  FlatList,
   Platform,
   StyleSheet,
-  Text,
   TouchableNativeFeedback,
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 interface SearchHistoryItem {
   id: string;
@@ -20,6 +21,8 @@ interface SearchHistoryItem {
 interface RecentSearchProps {
   history: SearchHistoryItem[];
   scrollY: Animated.SharedValue<number>;
+  IsSearching: boolean;
+  SetIsSearching: React.Dispatch<React.SetStateAction<boolean>>;
   onPressItem: (query: string) => void;
   onRemoveItem: (id: string) => void;
   onClearAll: () => void;
@@ -28,6 +31,8 @@ interface RecentSearchProps {
 const RecentSearch: React.FC<RecentSearchProps> = ({
   history,
   scrollY,
+  IsSearching,
+  SetIsSearching,
   onPressItem,
   onRemoveItem,
   onClearAll,
@@ -45,9 +50,12 @@ const RecentSearch: React.FC<RecentSearchProps> = ({
               color="#666"
               style={styles.historyIcon}
             />
-            <Text style={styles.historyText} numberOfLines={1}>
+            <AppText
+              style={[styles.historyText, { textAlign: "right" }]}
+              numberOfLines={1}
+            >
               {item.query}
-            </Text>
+            </AppText>
           </View>
           <TouchableOpacity
             style={styles.removeButton}
@@ -61,12 +69,14 @@ const RecentSearch: React.FC<RecentSearchProps> = ({
     );
   };
 
-  const listHeader = () => (
+  const ListHeader = () => (
     <View style={styles.historyHeader}>
-      <Text style={styles.historyTitle}>Recent searches</Text>
+      <AppText style={styles.historyTitle} type="pageTitle">
+        عمليات البحث الأخيرة
+      </AppText>
       {history.length > 0 && (
         <TouchableOpacity onPress={onClearAll}>
-          <Text style={styles.clearAllText}>Clear all</Text>
+          <AppText style={styles.clearAllText}>مسح الكل</AppText>
         </TouchableOpacity>
       )}
     </View>
@@ -75,45 +85,46 @@ const RecentSearch: React.FC<RecentSearchProps> = ({
   const emptyState = () => (
     <View style={styles.emptyState}>
       <Ionicons name="search-outline" size={48} color="#ccc" />
-      <Text style={styles.emptyStateText}>No recent searches</Text>
-      <Text style={styles.emptyStateSubtext}>
-        Your search history will appear here
-      </Text>
+      <AppText style={styles.emptyStateText}>لا يوجد عمليات بحث</AppText>
+      <AppText style={styles.emptyStateSubtext}>
+        سيتم عرض سجل عمليات البحث هنا
+      </AppText>
     </View>
   );
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
+
   return (
     <View style={styles.container}>
+      <ListHeader />
       {history.length > 0 ? (
-        <Animated.FlatList
+        <FlatList
           data={history}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          ListHeaderComponent={listHeader}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContainer}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
         />
       ) : (
-        <>
-          {listHeader()}
-          {emptyState()}
-        </>
+        <>{emptyState()}</>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    position: "absolute",
+    paddingTop: 10,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+  },
   listContainer: { paddingBottom: 20 },
   historyHeader: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
@@ -121,20 +132,44 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
-  historyTitle: { fontSize: 16, fontWeight: "600", color: "#333" },
-  clearAllText: { fontSize: 14, color: "#007AFF", fontWeight: "500" },
+  historyTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    writingDirection: "rtl",
+  },
+  clearAllText: {
+    fontSize: 14,
+    color: "#007AFF",
+    fontWeight: "500",
+    writingDirection: "rtl",
+  },
   historyItem: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 12,
     paddingHorizontal: 20,
     backgroundColor: "#fff",
   },
-  historyItemContent: { flexDirection: "row", alignItems: "center", flex: 1 },
-  historyIcon: { marginRight: 12 },
-  historyText: { fontSize: 16, color: "#333", flex: 1 },
-  removeButton: { padding: 4, marginLeft: 8 },
+  historyItemContent: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    flex: 1,
+  },
+  historyIcon: {
+    marginLeft: 12,
+  },
+  historyText: {
+    fontSize: 16,
+    color: "#333",
+    flex: 1,
+    writingDirection: "rtl",
+  },
+  removeButton: {
+    padding: 4,
+    marginRight: 8,
+  },
   emptyState: {
     flex: 1,
     justifyContent: "center",
@@ -147,12 +182,14 @@ const styles = StyleSheet.create({
     color: "#999",
     marginTop: 16,
     textAlign: "center",
+    writingDirection: "rtl",
   },
   emptyStateSubtext: {
     fontSize: 14,
     color: "#ccc",
     marginTop: 8,
     textAlign: "center",
+    writingDirection: "rtl",
   },
 });
 

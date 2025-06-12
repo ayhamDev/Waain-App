@@ -14,6 +14,7 @@ import { Image } from "expo-image";
 import React, { forwardRef, useMemo, useState } from "react";
 import { View } from "react-native";
 import AppSheet from "../AppSheet";
+import AppSheetWrapper from "../AppSheetWrapper";
 // Types
 interface PriceComparisonItem {
   id: number;
@@ -316,20 +317,21 @@ const PriceComparisonSheet = forwardRef<
 
   return (
     <AppSheet ref={ref} enableDynamicSizing={false} snapPoints={snapPoints}>
-      {/* Fixed Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          backgroundColor: Colors[theme].background.default,
-          zIndex: 10,
-          width: "100%",
-        }}
-      >
-        <AppSheetHeader title="مقارنة الاسعار" />
-      </View>
-      {/* <View
+      <AppSheetWrapper>
+        {/* Fixed Header */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            backgroundColor: Colors[theme].background.default,
+            zIndex: 10,
+            width: "100%",
+          }}
+        >
+          <AppSheetHeader title="مقارنة الاسعار" />
+        </View>
+        {/* <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -357,71 +359,76 @@ const PriceComparisonSheet = forwardRef<
         <View style={{ width: 40 }} />
       </View> */}
 
-      {/* Parallax ScrollView with FlatList */}
-      <SheetParallaxScrollView
-        headerHeight={200}
-        sticyHeaderHeight={50}
-        minimumHeaderHeight={0}
-        header={<ParallaxHeader />}
-        stickyHeader={<StickyHeader />}
-        data={priceComparisons}
-        renderItem={renderPriceItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{
-          paddingBottom: 160, // Space for bottom action bar
-          paddingTop: 200,
-        }}
-        containerStyle={{ flex: 1 }}
-      />
+        {/* Parallax ScrollView with FlatList */}
+        <SheetParallaxScrollView
+          headerHeight={200}
+          sticyHeaderHeight={70}
+          minimumHeaderHeight={0}
+          header={<ParallaxHeader />}
+          stickyHeader={<StickyHeader />}
+          data={priceComparisons}
+          renderItem={renderPriceItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{
+            paddingBottom: 160, // Space for bottom action bar
+            paddingTop: 200,
+          }}
+          containerStyle={{ flex: 1 }}
+        />
 
-      {/* Bottom Action Bar */}
-      <AppBottomView
-        style={{
-          gap: 12,
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-      >
-        <View
+        {/* Bottom Action Bar */}
+        <AppBottomView
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            gap: 12,
+            bottom: 0,
+            left: 0,
+            right: 0,
           }}
         >
-          <View>
-            <AppText
-              type="secondary"
-              style={{ textAlign: "right", fontSize: 12 }}
-            >
-              المتجر المختار
-            </AppText>
-            <AppText type="defaultBold" style={{ textAlign: "right" }}>
-              {selectedMarket.marketName}
-            </AppText>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <AppText
+                type="secondary"
+                style={{ textAlign: "right", fontSize: 12 }}
+              >
+                المتجر المختار
+              </AppText>
+              <AppText type="defaultBold" style={{ textAlign: "right" }}>
+                {selectedMarket.marketName}
+              </AppText>
+            </View>
+            <View style={{ alignItems: "flex-end" }}>
+              <AppText type="secondary" style={{ fontSize: 12 }}>
+                السعر الإجمالي
+              </AppText>
+              <AppText
+                type="pageTitle"
+                style={{ color: Colors[theme].primary.default }}
+              >
+                {selectedMarket.price.toFixed(2)} ر.س
+              </AppText>
+            </View>
           </View>
-          <View style={{ alignItems: "flex-end" }}>
-            <AppText type="secondary" style={{ fontSize: 12 }}>
-              السعر الإجمالي
-            </AppText>
-            <AppText
-              type="pageTitle"
-              style={{ color: Colors[theme].primary.default }}
-            >
-              {selectedMarket.price.toFixed(2)} ر.س
-            </AppText>
-          </View>
-        </View>
 
-        <AppButton
-          startComponent={(color) => (
-            <MingCuteIcon name="shopping_cart_1_line" size={20} color={color} />
-          )}
-          title="اضف الى السلة"
-          variant="secondary"
-        />
-      </AppBottomView>
+          <AppButton
+            startComponent={(color) => (
+              <MingCuteIcon
+                name="shopping_cart_1_line"
+                size={20}
+                color={color}
+              />
+            )}
+            title="اضف الى السلة"
+            variant="secondary"
+          />
+        </AppBottomView>
+      </AppSheetWrapper>
     </AppSheet>
   );
 });

@@ -54,7 +54,11 @@ const StoreScreen = () => {
         )}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ padding: 0, gap: 16, paddingBottom: 60 }}
+        contentContainerStyle={{
+          padding: 0,
+          gap: 16,
+          paddingBottom: 60,
+        }}
       />
 
       {/* <AppCard

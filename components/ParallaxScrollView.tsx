@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import {
   Animated,
   Dimensions,
   FlatList,
   FlatListProps,
   Platform,
+  ScrollView,
   StyleSheet,
   View,
   ViewStyle,
@@ -31,9 +32,22 @@ interface ParallaxScrollViewProps {
   flatListStyle?: ViewStyle;
 }
 
+export interface ParallaxScrollViewRef {
+  /**
+   * Scroll to a vertical offset (y).
+   * If FlatList is used under the hood, uses scrollToOffset; otherwise uses ScrollView.scrollTo.
+   */
+  scrollTo: (options: { y: number; animated?: boolean }) => void;
+}
+
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-function ParallaxScrollView(props: ParallaxScrollViewProps) {
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+const ParallaxScrollView = forwardRef<
+  ParallaxScrollViewRef,
+  ParallaxScrollViewProps
+>((props, ref) => {
   const {
     headerHeight = 250,
     sticyHeaderHeight = 50,
@@ -52,49 +66,71 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
     flatListStyle,
   } = props;
 
+  // Animated value
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  // Translate header container up as user scrolls down
+  // Ref to inner ScrollView or FlatList
+  const listRef = useRef<ScrollView | FlatList<any> | null>(null);
+
+  // Expose scrollTo on the forwarded ref
+  useImperativeHandle(
+    ref,
+    (): ParallaxScrollViewRef => ({
+      scrollTo: ({ y, animated = true }) => {
+        if (!listRef.current) return;
+        // If it's a ScrollView
+        if ("scrollTo" in listRef.current) {
+          (listRef.current as ScrollView).scrollTo({ y, animated });
+        }
+        // If it's a FlatList
+        else if ("scrollToOffset" in listRef.current) {
+          (listRef.current as FlatList<any>).scrollToOffset({
+            offset: y,
+            animated,
+          });
+        }
+      },
+    }),
+    []
+  );
+
+  // Interpolations
   const headerTranslate = scrollY.interpolate({
     inputRange: [0, headerHeight],
     outputRange: [0, -headerHeight],
     extrapolate: "clamp",
   });
-
-  // Parallax translate and scale for header content
   const headerTranslateY = scrollY.interpolate({
     inputRange: [-headerHeight, 0, headerHeight],
     outputRange: [-headerHeight / 2, 0, headerHeight * 0.75],
     extrapolate: "clamp",
   });
-
   const headerScale = scrollY.interpolate({
     inputRange: [-headerHeight, 0, headerHeight],
     outputRange: [2, 1, 1],
     extrapolate: "clamp",
   });
-
-  // Fade out main header as user scrolls past half the height
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, headerHeight / 2, headerHeight],
     outputRange: [1, 1, 0],
     extrapolate: "clamp",
   });
-
-  // Fade in sticky header so it's fully opaque when scrolled past main header
   const stickyOpacity = scrollY.interpolate({
     inputRange: [sticyHeaderHeight, headerHeight - sticyHeaderHeight],
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
-
-  const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+  const stickyTranslateY = scrollY.interpolate({
+    inputRange: [sticyHeaderHeight, headerHeight - sticyHeaderHeight],
+    outputRange: [-sticyHeaderHeight, 0],
+    extrapolate: "clamp",
+  });
 
   return (
     <View style={[styles.container, containerStyle]}>
       {/* Main Parallax Header Container */}
       <Animated.View
-        pointerEvents={"none"}
+        pointerEvents="none"
         style={[
           styles.headerContainer,
           headerContainerStyle,
@@ -106,7 +142,7 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
         ]}
       >
         <Animated.View
-          pointerEvents={"none"}
+          pointerEvents="none"
           style={[
             {
               width: SCREEN_WIDTH,
@@ -130,6 +166,7 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
             styles.stickyHeader,
             stickyHeaderContainerStyle,
             { opacity: stickyOpacity },
+            { transform: [{ translateY: stickyTranslateY }] },
           ]}
         >
           {stickyHeader}
@@ -138,6 +175,7 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
 
       {data && renderItem ? (
         <AnimatedFlatList
+          ref={listRef as any}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={data}
@@ -158,6 +196,7 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
         />
       ) : (
         <Animated.ScrollView
+          ref={listRef as any}
           contentContainerStyle={[
             { paddingTop: headerHeight },
             contentContainerStyle,
@@ -178,7 +217,7 @@ function ParallaxScrollView(props: ParallaxScrollViewProps) {
       )}
     </View>
   );
-}
+});
 
 export default ParallaxScrollView;
 
@@ -193,13 +232,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     overflow: "hidden",
-    zIndex: 2, // ensure header is above the list
+    zIndex: 2,
   },
   stickyHeader: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 3, // above header
+    zIndex: 3,
   },
 });

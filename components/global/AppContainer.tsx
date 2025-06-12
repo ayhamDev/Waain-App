@@ -46,7 +46,9 @@ const AppContainer = ({
           {children}
         </Animated.ScrollView>
       ) : (
-        <View style={[styles.content, contentStyle]}>{children}</View>
+        <View style={[styles.content, { paddingBottom: 0 }, contentStyle]}>
+          {children}
+        </View>
       )}
     </View>
   );

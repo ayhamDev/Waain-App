@@ -15,7 +15,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import TextInputField from "../ui/Input";
+import TextInputField, { TextInputFieldProps } from "../ui/Input";
 
 // Country data with phone codes and formatting
 const COUNTRIES = [
@@ -47,7 +47,7 @@ type PhoneInputProps = {
   countryPickerStyle?: ViewStyle;
   modalStyle?: ViewStyle;
   rtl?: boolean;
-};
+} & TextInputFieldProps;
 
 export type PhoneInputRef = {
   focus: () => void;
@@ -104,6 +104,11 @@ const PhoneInputField = forwardRef<PhoneInputRef, PhoneInputProps>(
         formatPhoneNumber(phoneNumber, selectedCountry.format),
       getUnformattedNumber: () => phoneNumber.replace(/\D/g, ""),
       getCountry: () => selectedCountry,
+      measureInWindow: (
+        callback: (x: number, y: number, w: number, h: number) => void
+      ) => {
+        inputRef.current?.measureInWindow(callback);
+      },
     }));
 
     const formatPhoneNumber = (number: string, format: string): string => {

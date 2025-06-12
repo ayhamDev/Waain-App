@@ -5,28 +5,19 @@ import {
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetModalProps,
-  useBottomSheetModal,
   useBottomSheetSpringConfigs,
 } from "@gorhom/bottom-sheet";
-import React, {
-  forwardRef,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
-import { BackHandler, StyleSheet } from "react-native";
+import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
+import { StyleSheet } from "react-native";
 
 type AppSheetProps = {
   children: ReactNode;
   snapPoints?: string[];
-  onClose?: () => void;
 } & Omit<BottomSheetModalProps, "snapPoints" | "children" | "ref">;
 
 const AppSheet = forwardRef<BottomSheetModal, AppSheetProps>(
-  ({ children, snapPoints = undefined, onClose, ...rest }, ref) => {
+  ({ children, snapPoints = undefined, ...rest }, ref) => {
     const { theme } = useColorScheme();
-    const { dismiss } = useBottomSheetModal();
 
     const animationConfigs = useBottomSheetSpringConfigs({
       damping: 20,
@@ -50,19 +41,8 @@ const AppSheet = forwardRef<BottomSheetModal, AppSheetProps>(
     );
 
     // Handle Android Back Button
-    useEffect(() => {
-      const onBackPress = () => {
-        dismiss();
-        onClose?.();
-        return true;
-      };
 
-      const sub = BackHandler.addEventListener(
-        "hardwareBackPress",
-        onBackPress
-      );
-      return () => sub.remove();
-    }, [dismiss, onClose]);
+    // make sure to fix the back button
 
     const backgroundColor = useMemo(
       () => ({ backgroundColor: Colors[theme].background.default }),

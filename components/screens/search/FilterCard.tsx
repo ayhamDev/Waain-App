@@ -39,6 +39,7 @@ const FilterCard: React.FC<FilterCardProps> = ({
             alignSelf: "baseline",
             borderRadius: 6,
             marginRight: 12,
+            gap: 6,
           }}
         >
           <MingCuteIcon

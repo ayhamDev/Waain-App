@@ -39,6 +39,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaView
+          mode="padding"
           style={{ flex: 1, backgroundColor: Colors[theme].background.default }}
         >
           <AppSheetProvider>

@@ -12,7 +12,7 @@ import {
 
 type RenderComponent = (props: { color: string }) => React.ReactNode;
 
-type Props = {
+export type TextInputFieldProps = {
   label?: string;
   errorMessage?: string;
   disabled?: boolean;
@@ -25,7 +25,7 @@ type Props = {
   endComponent?: React.ReactNode | RenderComponent;
 } & TextInputProps;
 
-const TextInputField = forwardRef<TextInput, Props>(
+const TextInputField = forwardRef<TextInput, TextInputFieldProps>(
   (
     {
       label,
@@ -87,11 +87,7 @@ const TextInputField = forwardRef<TextInput, Props>(
             disabled && styles.inputDisabled,
           ]}
         >
-          {!!startComponent && (
-            <View style={styles.sideComponent}>
-              {renderComponent(startComponent)}
-            </View>
-          )}
+          {!!startComponent && <View>{renderComponent(startComponent)}</View>}
           <TextInput
             ref={ref}
             editable={!disabled}
@@ -108,11 +104,7 @@ const TextInputField = forwardRef<TextInput, Props>(
             textAlign={rtl ? "right" : "left"}
             {...rest}
           />
-          {!!endComponent && (
-            <View style={styles.sideComponent}>
-              {renderComponent(endComponent)}
-            </View>
-          )}
+          {!!endComponent && <View>{renderComponent(endComponent)}</View>}
         </View>
         {!!errorMessage && (
           <Text style={[styles.errorMessage, errorStyle]}>{errorMessage}</Text>

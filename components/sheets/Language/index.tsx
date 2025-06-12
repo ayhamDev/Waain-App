@@ -8,6 +8,7 @@ import React, { forwardRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import AppSheet from "../AppSheet";
+import AppSheetWrapper from "../AppSheetWrapper";
 
 const languages = ["العربية", "English"] as const;
 
@@ -21,43 +22,45 @@ const LanguageSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
   return (
     <AppSheet ref={ref} snapPoints={undefined} enableDynamicSizing={true}>
-      <BottomSheetView style={styles.contentContainer}>
-        <AppSheetHeader back={false} title="اختار اللغة" />
-        <AppView style={{ padding: 20, width: "100%" }}>
-          {languages.map((lang, index) => (
-            <React.Fragment key={lang}>
-              <TouchableOpacity
-                style={{ width: "100%" }}
-                onPress={() => toggleLanguage(lang)}
-              >
-                <AppView
-                  style={[
-                    styles.row,
-                    { justifyContent: "space-between", alignItems: "center" },
-                  ]}
+      <AppSheetWrapper>
+        <BottomSheetView style={styles.contentContainer}>
+          <AppSheetHeader back={false} title="اختار اللغة" />
+          <AppView style={{ padding: 20, width: "100%" }}>
+            {languages.map((lang, index) => (
+              <React.Fragment key={lang}>
+                <TouchableOpacity
+                  style={{ width: "100%" }}
+                  onPress={() => toggleLanguage(lang)}
                 >
-                  <AppView>
-                    <BouncyCheckbox
-                      size={25}
-                      fillColor={Colors[theme].primary[600]}
-                      isChecked={selected === lang}
-                      useBuiltInState={false}
-                      unFillColor="#FFFFFF"
-                      iconStyle={{ borderColor: Colors[theme].primary[400] }}
-                      innerIconStyle={{ borderWidth: 2 }}
-                      onPress={() => toggleLanguage(lang)}
-                    />
+                  <AppView
+                    style={[
+                      styles.row,
+                      { justifyContent: "space-between", alignItems: "center" },
+                    ]}
+                  >
+                    <AppView>
+                      <BouncyCheckbox
+                        size={25}
+                        fillColor={Colors[theme].primary[600]}
+                        isChecked={selected === lang}
+                        useBuiltInState={false}
+                        unFillColor="#FFFFFF"
+                        iconStyle={{ borderColor: Colors[theme].primary[400] }}
+                        innerIconStyle={{ borderWidth: 2 }}
+                        onPress={() => toggleLanguage(lang)}
+                      />
+                    </AppView>
+                    <AppText type="defaultBold">{lang}</AppText>
                   </AppView>
-                  <AppText type="defaultBold">{lang}</AppText>
-                </AppView>
-              </TouchableOpacity>
-              {index < languages.length - 1 && (
-                <View style={styles.separator} />
-              )}
-            </React.Fragment>
-          ))}
-        </AppView>
-      </BottomSheetView>
+                </TouchableOpacity>
+                {index < languages.length - 1 && (
+                  <View style={styles.separator} />
+                )}
+              </React.Fragment>
+            ))}
+          </AppView>
+        </BottomSheetView>
+      </AppSheetWrapper>
     </AppSheet>
   );
 });

@@ -1,17 +1,13 @@
 import AppContainer from "@/components/global/AppContainer";
-import { AppText } from "@/components/global/AppText";
 import SearchHeader from "@/components/global/SearchHeader";
-import { ProductCard } from "@/components/product/ProductCard";
-import FilterCard from "@/components/screens/search/FilterCard";
-import { IconButton } from "@/components/ui/IconButton";
-import MingCuteIcon, {
-  MingCuteIconName,
-} from "@/components/ui/MingCute/MingCuteIcon";
+import RecentSearch from "@/components/screens/search/RecentSearch";
+import { useAppSheet } from "@/context/AppSheet.context";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import { useSharedValue } from "react-native-reanimated";
-import { FlatGrid } from "react-native-super-grid";
 
 interface SearchHistoryItem {
   id: string;
@@ -19,35 +15,35 @@ interface SearchHistoryItem {
   timestamp: Date;
 }
 
-const filters: {
-  id: string;
-  name: string;
-  icon: MingCuteIconName;
-  onPress: () => void;
-}[] = [
-  {
-    id: "market",
-    name: "السوبرماركت",
-    icon: "store_2_fill",
-    onPress: () => {},
-  },
-  {
-    id: "brand",
-    name: "العلامة التجارية",
-    icon: "store_2_fill",
-    onPress: () => {},
-  },
-  {
-    id: "price",
-    name: "السعر",
-    icon: "store_2_fill",
-    onPress: () => {},
-  },
-];
-
 export default function SearchScreen() {
   const { theme } = useColorScheme();
+  // Grab the 'query' param, if any, from the URL/search params
+  const { query, stack } = useLocalSearchParams<{
+    query?: string;
+    stack?: "result";
+  }>();
+  const router = useRouter();
+
+  const searchRef = useRef<TextInput>(null);
+  const [IsSearching, SetIsSearching] = useState(false);
   const scrollY = useSharedValue(0);
+
+  // State to control the input text, initialized from query param:
+  const [searchText, setSearchText] = useState<string>(() =>
+    typeof query === "string" ? query : ""
+  );
+
+  // Whenever the URL param `query` changes (e.g., user navigates back with a different param),
+  // update the input state to reflect it.
+  useEffect(() => {
+    if (typeof query === "string") {
+      setSearchText(query);
+    } else {
+      // If query param becomes undefined or non-string, you may decide to clear:
+      setSearchText("");
+    }
+  }, [query]);
+
   // Mock search history data - in a real app, this would come from storage/state management
   const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([
     {
@@ -55,53 +51,22 @@ export default function SearchScreen() {
       query: "React Native tutorial",
       timestamp: new Date(Date.now() - 86400000),
     },
-    {
-      id: "2",
-      query: "JavaScript async await",
-      timestamp: new Date(Date.now() - 172800000),
-    },
-    {
-      id: "3",
-      query: "TypeScript interfaces",
-      timestamp: new Date(Date.now() - 259200000),
-    },
-    {
-      id: "4",
-      query: "Mobile app development",
-      timestamp: new Date(Date.now() - 345600000),
-    },
-    {
-      id: "5",
-      query: "React hooks useState",
-      timestamp: new Date(Date.now() - 432000000),
-    },
-    {
-      id: "6",
-      query: "CSS flexbox layout",
-      timestamp: new Date(Date.now() - 518400000),
-    },
-    {
-      id: "7",
-      query: "API integration guide",
-      timestamp: new Date(Date.now() - 604800000),
-    },
-    {
-      id: "8",
-      query: "Expo development setup",
-      timestamp: new Date(Date.now() - 691200000),
-    },
-    {
-      id: "9",
-      query: "Expo development setup",
-      timestamp: new Date(Date.now() - 691200000),
-    },
+    // ... other items
   ]);
 
-  const handleSearchHistoryPress = (query: string) => {
-    // Handle search history item press
-    console.log("Selected search:", query);
-    // You can navigate to search results or populate search input here
-  };
+  const { ProductSheet } = useAppSheet();
+
+  // When user taps a history item, navigate (and set searchText if desired)
+  const handleSearchHistoryPress = useCallback(
+    (q: string) => {
+      // Populate input and navigate to results:
+      router.push({
+        pathname: "/search/result",
+        params: { query: q },
+      });
+    },
+    [router]
+  );
 
   const handleRemoveHistoryItem = (id: string) => {
     setSearchHistory((prev) => prev.filter((item) => item.id !== id));
@@ -109,6 +74,27 @@ export default function SearchScreen() {
 
   const handleClearAllHistory = () => {
     setSearchHistory([]);
+  };
+
+  // Auto-focus input when screen is focused
+  useFocusEffect(() => {
+    const timeout = setTimeout(() => {
+      if (searchRef.current) {
+        searchRef.current.focus();
+      }
+    }, 300);
+    return () => clearTimeout(timeout);
+  });
+
+  // Handler when user submits from keyboard
+  const handleSubmitEditing = () => {
+    const trimmed = searchText.trim();
+    if (trimmed.length > 0) {
+      router.push({
+        pathname: "/search/result",
+        params: { query: trimmed },
+      });
+    }
   };
 
   return (
@@ -120,93 +106,30 @@ export default function SearchScreen() {
       }}
       scrollY={scrollY}
       scroll={false}
-      header={<SearchHeader scrollY={scrollY} stack={false} />}
+      header={
+        <SearchHeader
+          stack={stack == "result" ? true : false}
+          // Pass controlled value and onChangeText so input shows searchText
+          value={searchText}
+          onChangeText={setSearchText}
+          onSubmitEditing={handleSubmitEditing}
+          ref={searchRef}
+          scrollY={scrollY}
+          // In the Search tab’s index, typically you want inline editing,
+          // so we omit navigateOnPress (or set to false).
+        />
+      }
     >
       <View style={styles.container}>
         {/* State of search history */}
-        {/* <RecentSearch
+        <RecentSearch
+          SetIsSearching={SetIsSearching}
+          IsSearching={IsSearching}
           scrollY={scrollY}
           history={searchHistory}
           onClearAll={handleClearAllHistory}
           onPressItem={handleSearchHistoryPress}
           onRemoveItem={handleRemoveHistoryItem}
-        /> */}
-
-        {/* State of search query */}
-        <View style={{ gap: 10 }}>
-          <View style={{ paddingHorizontal: 20, gap: 5 }}>
-            <AppText style={{ textAlign: "right" }} type="pageTitle">
-              نتائج البحث
-            </AppText>
-            <View
-              style={{
-                flexDirection: "row",
-                alignContent: "center",
-                justifyContent: "flex-end",
-                gap: 5,
-              }}
-            >
-              <AppText type="defaultBold">“product name”</AppText>
-              <AppText type="secondary">30 نتيجة بحث</AppText>
-            </View>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <IconButton
-              compact={true}
-              style={{
-                marginLeft: 20,
-                marginRight: 10,
-              }}
-              variant="danger"
-              icon={(color) => (
-                <MingCuteIcon name="delete_2_fill" size={18} color={color} />
-              )}
-            />
-
-            <ScrollView
-              horizontal={true}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                flexDirection: "row",
-              }}
-            >
-              {filters.map((filter) => (
-                <FilterCard
-                  filter={filter}
-                  onPress={filter.onPress}
-                  key={filter.id}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-        <FlatGrid
-          itemDimension={150}
-          spacing={15}
-          style={{
-            marginTop: 10,
-            marginBottom: -20,
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            justifyContent: "space-between",
-          }}
-          itemContainerStyle={{
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={Array.from({ length: 10 }, (value, index) => index)}
-          renderItem={({ item }) => (
-            <ProductCard
-              imageUri="https://placehold.co/120x120?text=product"
-              title="product"
-              badgeText="dairy"
-              subtitle="milk"
-            />
-          )}
         />
       </View>
     </AppContainer>

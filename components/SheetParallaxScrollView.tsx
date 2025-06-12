@@ -115,6 +115,12 @@ const SheetParallaxScrollView = forwardRef<any, SheetParallaxScrollViewProps>(
       extrapolate: "clamp",
     });
 
+    const stickyTranslateY = scrollY.interpolate({
+      inputRange: [sticyHeaderHeight, headerHeight - sticyHeaderHeight],
+      outputRange: [-sticyHeaderHeight, 0],
+      extrapolate: "clamp",
+    });
+
     return (
       <View style={[styles.container, containerStyle]}>
         {/* Parallax Header */}
@@ -154,6 +160,9 @@ const SheetParallaxScrollView = forwardRef<any, SheetParallaxScrollViewProps>(
               styles.stickyHeader,
               stickyHeaderContainerStyle,
               { opacity: stickyOpacity },
+              {
+                transform: [{ translateY: stickyTranslateY }],
+              },
             ]}
           >
             {stickyHeader}

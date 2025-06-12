@@ -11,6 +11,7 @@ import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import AppSheet from "../AppSheet";
+import AppSheetWrapper from "../AppSheetWrapper";
 import LocationSheet from "../location";
 
 const CartSheet = forwardRef<BottomSheetModal>((props, ref) => {
@@ -19,118 +20,127 @@ const CartSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
   return (
     <AppSheet ref={ref}>
-      <BottomSheetView style={styles.contentContainer}>
-        <AppSheetHeader title="اختر طريقة التسوق" />
-        <AppView style={{ padding: 20, width: "100%" }}>
-          <View style={{ gap: 24 }}>
-            <View style={{ gap: 16 }}>
-              <AppButton
-                title="توصيل"
-                variant="primary"
-                disabled={true}
-                startComponent={(color) => (
-                  <MingCuteIcon name="car_3_line" size={20} color={color} />
-                )}
-              />
-              <AppButton
-                title="ساتسوق بنفسي"
-                variant="secondary"
-                startComponent={(color) => (
-                  <MingCuteIcon name="road_fill" size={20} color={color} />
-                )}
-              />
-            </View>
-            <View
-              style={{
-                gap: 16,
-              }}
-            >
+      <AppSheetWrapper>
+        <BottomSheetView style={styles.contentContainer}>
+          <AppSheetHeader title="اختر طريقة التسوق" />
+          <AppView style={{ padding: 20, width: "100%" }}>
+            <View style={{ gap: 24 }}>
+              <View style={{ gap: 16 }}>
+                <AppButton
+                  title="توصيل"
+                  variant="primary"
+                  disabled={true}
+                  startComponent={(color) => (
+                    <MingCuteIcon name="car_3_line" size={20} color={color} />
+                  )}
+                />
+                <AppButton
+                  title="ساتسوق بنفسي"
+                  variant="secondary"
+                  startComponent={(color) => (
+                    <MingCuteIcon name="road_fill" size={20} color={color} />
+                  )}
+                />
+              </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  gap: 16,
                 }}
               >
-                <AppButton
-                  title="حدد الموقع"
-                  startComponent={(icon) => (
-                    <MingCuteIcon name="location_fill" size={20} color={icon} />
-                  )}
-                  onPress={() => {
-                    LocationSheetRef.current?.present();
-                  }}
-                />
-                <AppText type="pageTitle">الموقع المختار</AppText>
-              </View>
-              <AppCard selected={true} variant="primary">
                 <View
                   style={{
-                    justifyContent: "flex-end",
-                    alignItems: "center",
                     flexDirection: "row",
-                    backgroundColor: "transparent",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  <AppView
+                  <AppButton
+                    title="حدد الموقع"
+                    startComponent={(icon) => (
+                      <MingCuteIcon
+                        name="location_fill"
+                        size={20}
+                        color={icon}
+                      />
+                    )}
+                    onPress={() => {
+                      LocationSheetRef.current?.present();
+                    }}
+                  />
+                  <AppText type="pageTitle">الموقع المختار</AppText>
+                </View>
+                <AppCard selected={true} variant="primary">
+                  <View
                     style={{
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      flexDirection: "row",
                       backgroundColor: "transparent",
                     }}
                   >
-                    <AppText type="defaultBold" style={{ textAlign: "right" }}>
-                      موقعك الحالي
-                    </AppText>
-                    <AppText
-                      type="secondary"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      style={{ textAlign: "right", maxWidth: 320 }}
+                    <AppView
+                      style={{
+                        backgroundColor: "transparent",
+                      }}
                     >
-                      سيتم استخدام الموقع الجغرافي لتحديد موقعك الحالي
-                    </AppText>
-                  </AppView>
-                </View>
-              </AppCard>
-            </View>
-            <View style={{ gap: 16 }}>
-              <AppText type="pageTitle" style={{ textAlign: "right" }}>
-                تفاصيل السعر
-              </AppText>
-              <View style={{ gap: 12 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <AppText>35</AppText>
-                  <AppText>سعر المنتجات</AppText>
-                </View>
-                <AppSeperator />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <AppBadge variant="primary">
-                    <AppText type="defaultBold">35</AppText>
-                  </AppBadge>
-                  <AppText
-                    type="defaultBold"
-                    style={{ fontFamily: "Cairo-Bold" }}
+                      <AppText
+                        type="defaultBold"
+                        style={{ textAlign: "right" }}
+                      >
+                        موقعك الحالي
+                      </AppText>
+                      <AppText
+                        type="secondary"
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={{ textAlign: "right", maxWidth: 320 }}
+                      >
+                        سيتم استخدام الموقع الجغرافي لتحديد موقعك الحالي
+                      </AppText>
+                    </AppView>
+                  </View>
+                </AppCard>
+              </View>
+              <View style={{ gap: 16 }}>
+                <AppText type="pageTitle" style={{ textAlign: "right" }}>
+                  تفاصيل السعر
+                </AppText>
+                <View style={{ gap: 12 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    سعر المنتجات
-                  </AppText>
+                    <AppText>35</AppText>
+                    <AppText>سعر المنتجات</AppText>
+                  </View>
+                  <AppSeperator />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <AppBadge variant="primary">
+                      <AppText type="defaultBold">35</AppText>
+                    </AppBadge>
+                    <AppText
+                      type="defaultBold"
+                      style={{ fontFamily: "Cairo-Bold" }}
+                    >
+                      سعر المنتجات
+                    </AppText>
+                  </View>
                 </View>
               </View>
+              <AppButton title="متابعة" variant="secondary" />
             </View>
-            <AppButton title="متابعة" variant="secondary" />
-          </View>
-        </AppView>
-        <LocationSheet ref={LocationSheetRef} />
-      </BottomSheetView>
+          </AppView>
+          <LocationSheet ref={LocationSheetRef} />
+        </BottomSheetView>
+      </AppSheetWrapper>
     </AppSheet>
   );
 });

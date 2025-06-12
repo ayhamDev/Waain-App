@@ -18,8 +18,8 @@ const AppSheetHeader: React.FC<AppSheetHeaderProps> = ({
   title,
   back = true,
 }) => {
-  const { dismiss } = useBottomSheetModal();
   const { theme } = useColorScheme();
+  const { dismiss } = useBottomSheetModal();
 
   return (
     <View

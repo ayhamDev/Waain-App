@@ -15,7 +15,7 @@ import {
 const TAB_ROUTES = [
   { name: "index", iconFill: "home_4_fill", iconLine: "home_4_line" },
   {
-    name: "search/index",
+    name: "search",
     iconFill: "search_fill",
     iconLine: "search_line",
   },
@@ -92,6 +92,23 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
     });
   };
 
+  // Helper function to find the matching tab route definition
+  const findTabRoute = (routeName: string) => {
+    // First try exact match
+    let tabRoute = TAB_ROUTES.find((r) => r.name === routeName);
+
+    if (!tabRoute) {
+      // If no exact match, try to match by base name
+      // For routes like "profile/details", try to match with "profile/index"
+      if (routeName.includes("/")) {
+        const baseName = routeName.split("/")[0];
+        tabRoute = TAB_ROUTES.find((r) => r.name.startsWith(baseName + "/"));
+      }
+    }
+
+    return tabRoute;
+  };
+
   return (
     <View
       style={[
@@ -121,7 +138,7 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
       {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
         const isFocused = currentIndex === index;
-        const iconDef = TAB_ROUTES.find((r) => r.name === route.name);
+        const tabRoute = findTabRoute(route.name);
 
         return (
           <TouchableOpacity
@@ -133,10 +150,10 @@ function MyTabBar({ state, descriptors, navigation }: MyTabBarProps) {
             style={styles.tabButton}
             onLayout={onTabLayout(index)}
           >
-            {iconDef ? (
+            {tabRoute ? (
               <MingCuteIcon
                 size={28}
-                name={isFocused ? iconDef.iconFill : iconDef.iconLine}
+                name={isFocused ? tabRoute.iconFill : tabRoute.iconLine}
                 color={Colors[theme].primary["950"]}
               />
             ) : (

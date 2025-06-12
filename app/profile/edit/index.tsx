@@ -27,7 +27,7 @@ const ProfileEditScreen = () => {
             <IconButton
               rounded={false}
               variant="primary"
-              style={{ height: 50, width: 50 }}
+              style={{ height: 45, width: 45 }}
               icon={(color) => (
                 <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
@@ -55,7 +55,7 @@ const ProfileEditScreen = () => {
             <IconButton
               rounded={false}
               variant="primary"
-              style={{ height: 50, width: 50 }}
+              style={{ height: 45, width: 45 }}
               icon={(color) => (
                 <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
@@ -68,7 +68,7 @@ const ProfileEditScreen = () => {
             <IconButton
               rounded={false}
               variant="primary"
-              style={{ height: 50, width: 50 }}
+              style={{ height: 45, width: 45 }}
               icon={(color) => (
                 <MingCuteIcon name="edit_2_fill" color={color} size={20} />
               )}
